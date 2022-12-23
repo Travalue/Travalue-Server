@@ -29,6 +29,11 @@ dependencies {
 	// jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'mysql:mysql-connector-java'
+
+	// swagger
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	implementation 'org.jetbrains:annotations:20.1.0'
+	compileOnly 'org.jetbrains:annotations:16.0.2'
 }
 
 tasks.named('test') {
