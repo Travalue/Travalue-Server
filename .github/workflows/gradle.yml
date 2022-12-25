@@ -31,8 +31,14 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    
+    # 3) 환경변수 파일 생성
+    - uses: actions/checkout@v3
+    - run: touch ./src/main/resources/application.properties
+    - run: echo "${{ secrets.TRAVALUE_APPLICATION }}" > ./src/main/resources/application.properties
+    - run: cat ./src/main/resources/application.properties
         
-    # 3) Gradle 사용 arguments를 붙이면 뒤에 그대로 실행된다고 생각하면 됨
+    # 4) Gradle 사용 arguments를 붙이면 뒤에 그대로 실행된다고 생각하면 됨
     # 이 워크플로우는 gradle clean build를 수행함
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
