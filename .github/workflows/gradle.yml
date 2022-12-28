@@ -46,6 +46,9 @@ jobs:
 
         # GitHub-Actions 에서 설정한 값을 application.yml 파일에 쓰기
         echo "${{ secrets.TRAVALUE_APPLICATION }}" >> ./application.yml
+        
+        # application.yml 파일 확인
+        cat ./application.yml
       shell: bash
         
     # 4) Gradle 사용 arguments를 붙이면 뒤에 그대로 실행된다고 생각하면 됨
