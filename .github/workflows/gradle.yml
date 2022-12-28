@@ -11,7 +11,7 @@ on:
   push:
     branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
 
 env:
   S3_BUCKET_NAME: travalue-deploy
@@ -59,7 +59,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: Build with Gradle # 실제 application build(-x 옵션을 통해 test는 제외)
-      run: ./gradlew clean build
+      run: ./gradlew build -x test
       
     # 디렉토리 생성
     - name: Make Directory
