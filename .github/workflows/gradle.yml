@@ -22,8 +22,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
     # 1) 워크플로우 실행 전 기본적으로 체크아웃 필요
-    - uses: actions/checkout@v3
+    - name: checkout
+      uses: actions/checkout@v3
     
     # 2) JDK 11버전 설치, 다른 JDK 버전을 사용하다면 수정
     - name: Set up JDK 11
@@ -33,10 +35,18 @@ jobs:
         distribution: 'temurin'
     
     # 3) 환경변수 파일 생성
-    - uses: actions/checkout@v3
-    - run: touch ./src/main/resources/application.properties
-    - run: echo "${{ secrets.TRAVALUE_APPLICATION }}" > ./src/main/resources/application.properties
-    - run: cat ./src/main/resources/application.properties
+    - name: make application.properties 파일 생성
+      run: |
+        ## create application.properties
+        mkdir ./src/main/resources
+        cd ./src/main/resources
+
+        # application-database.yaml 파일 생성
+        touch ./application.properties.yml
+
+        # GitHub-Actions 에서 설정한 값을 application-database.yaml 파일에 쓰기
+        echo "${{ secrets.TRAVALUE_APPLICATION }}" >> ./application.properties
+      shell: bash
         
     # 4) Gradle 사용 arguments를 붙이면 뒤에 그대로 실행된다고 생각하면 됨
     # 이 워크플로우는 gradle clean build를 수행함
