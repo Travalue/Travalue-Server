@@ -51,7 +51,12 @@ jobs:
         cat ./application.yml
       shell: bash
         
-    # 4) Gradle 사용 arguments를 붙이면 뒤에 그대로 실행된다고 생각하면 됨
-    # 이 워크플로우는 gradle clean build를 수행함
-    - name: Build with Gradle
-      run: ./gradlew bootJar
+    # 이 워크플로우는 gradle build
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build with Gradle # 실제 application build(-x 옵션을 통해 test는 제외)
+      run: ./gradlew build -x test
+      
+    - name: Test with Gradle # test application build
+      run: ./gradlew test
