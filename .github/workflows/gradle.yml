@@ -9,7 +9,7 @@ name: Travalue-Server CI & CD with Gradle
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
