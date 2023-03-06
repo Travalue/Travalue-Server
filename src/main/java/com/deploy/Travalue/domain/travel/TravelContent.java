@@ -8,10 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TravelContent extends AuditingTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +24,10 @@ public class TravelContent extends AuditingTimeEntity {
 //    @JoinColumn(name="")
 //    private Trailer tariler;
 
-    @Column
+    @Column(nullable = false)
     private String image;
 
-    @Column
+    @Column(nullable = false)
     private String text;
 
 
