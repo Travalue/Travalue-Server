@@ -15,10 +15,10 @@ public class TravelInformation extends AuditingTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Double latitude;
+    private double latitude;
 
     @Column(nullable = false)
-    private Double longitude;
+    private double longitude;
 
     @Column(nullable = false)
     private String name;
