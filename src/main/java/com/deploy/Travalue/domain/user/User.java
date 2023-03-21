@@ -1,11 +1,16 @@
 package com.deploy.Travalue.domain.user;
 
 import com.deploy.Travalue.domain.common.AuditingTimeEntity;
+import com.deploy.Travalue.domain.travel.Category;
+import com.deploy.Travalue.domain.travel.Travel;
+import com.deploy.Travalue.domain.travel.VisitedTravel;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,4 +37,13 @@ public class User extends AuditingTimeEntity {
 
     @Embedded
     private SocialInformation socialInformation;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private final List<Category> categoryList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private final List<Travel> travelList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private final List<VisitedTravel> visitedTravelList = new ArrayList<>();
 }
