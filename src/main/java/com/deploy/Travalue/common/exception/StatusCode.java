@@ -23,5 +23,5 @@ public enum StatusCode {
     BAD_GATEWAY(502),
     SERVICE_UNAVAILABLE(503);
 
-    private final int status;
+    private final int statusCodeNumber;
 }
