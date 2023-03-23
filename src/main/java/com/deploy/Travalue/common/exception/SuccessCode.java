@@ -19,6 +19,6 @@ public enum SuccessCode {
     private final String message;
 
     public int getStatus() {
-        return statusCode.getStatus();
+        return statusCode.getStatusCodeNumber();
     }
 }
