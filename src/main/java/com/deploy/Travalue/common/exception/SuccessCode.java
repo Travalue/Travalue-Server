@@ -13,6 +13,7 @@ public enum SuccessCode {
     NETWORK_SUCCESS(SUCCESS, "서버 테스트가 완료되었습니다."),
     SIGNUP_SUCCESS(SUCCESS, "회원가입이 완료되었습니다."),
     LOGIN_SUCCESS(SUCCESS, "로그인이 완료되었습니다."),
+    READ_TRAILERS_SUCCESS(SUCCESS, "Trailer 전체 조회 성공"),
     ;
 
     private final StatusCode statusCode;
