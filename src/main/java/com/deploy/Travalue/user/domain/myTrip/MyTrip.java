@@ -20,7 +20,7 @@ public class MyTrip extends AuditingTimeEntity {
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
-    @Column(length = 1, nullable = false)
+    @Column(length = 10, nullable = false)
     private String emoji;
 
     @Column(nullable = false)
