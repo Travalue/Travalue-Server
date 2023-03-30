@@ -10,6 +10,9 @@ public enum SuccessCode {
 
     SIGNUP_SUCCESS(StatusCode.SUCCESS, "회원가입이 완료되었습니다."),
     LOGIN_SUCCESS(StatusCode.SUCCESS, "로그인이 완료되었습니다."),
+
+    // user
+    CREATE_MY_TRIP_SUCCESS(StatusCode.CREATED, "나의 여행지가 생성되었습니다."),
     ;
 
     private final StatusCode statusCode;
