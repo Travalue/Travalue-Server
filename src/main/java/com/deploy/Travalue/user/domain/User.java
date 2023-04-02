@@ -1,5 +1,6 @@
 package com.deploy.Travalue.user.domain;
 
+import javax.persistence.Column;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 50, nullable = false)
+    private String nickname;
+
+    public void updateNickname(String nickname){
+        this.nickname = nickname;
+    }
 }
