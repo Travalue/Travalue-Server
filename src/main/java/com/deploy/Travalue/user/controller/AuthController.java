@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final JwtService jwtService;
     private final AuthServiceProvider authServiceProvider;
 
     @ApiOperation("소셜 로그인 페이지")
-    @PostMapping("/v1/login")
+    @PostMapping("/login")
     public ApiResponse<LoginResponse> login(@Valid @RequestBody final LoginRequest loginRequest) {
         final AuthService authService = authServiceProvider.getAuthService(loginRequest.getSocialType());
         final Long userId = authService.login(loginRequest);
