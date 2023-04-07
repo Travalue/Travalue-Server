@@ -13,6 +13,7 @@ public enum SuccessCode {
 
     // user
     CREATE_MY_TRIP_SUCCESS(StatusCode.CREATED, "나의 여행지가 생성되었습니다."),
+    GET_MY_TRIP_LIST_SUCCESS(StatusCode.SUCCESS, "나의 여행지 리스트 조회성공"),
     ;
 
     private final StatusCode statusCode;
