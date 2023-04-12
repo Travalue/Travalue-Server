@@ -19,6 +19,7 @@ public class TrailerController {
     @ApiOperation("Trailer 전체 조회 API")
     @GetMapping("/post/trailers")
     public ApiResponse<List<TrailersResponseDto>> getTrailers() {
-        return ApiResponse.success(SuccessCode.READ_TRAILERS_SUCCESS, trailerService.getTrailers());
+        final List<TrailersResponseDto> trailers = trailerService.getTrailers();
+        return ApiResponse.success(SuccessCode.READ_TRAILERS_SUCCESS, trailers);
     }
 }
