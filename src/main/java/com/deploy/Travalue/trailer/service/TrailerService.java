@@ -5,9 +5,9 @@ import com.deploy.Travalue.trailer.infrastructure.TravelRepository;
 import com.deploy.Travalue.trailer.service.dto.response.TrailersResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -15,9 +15,16 @@ public class TrailerService {
 
     private final TravelRepository travelRepository;
 
-    @Transactional
+    @Transactional(readOnly=true)
     public List<TrailersResponseDto> getTrailers() {
-        final Travel travel = (Travel) travelRepository.findAll();
-        return (List<TrailersResponseDto>) travel;
+        final List<Travel> travel = travelRepository.findAll();
+        return travel.stream()
+                .map(trailer -> TrailersResponseDto.of(
+                        trailer.getId(),
+                        trailer.getSubject(),
+                        trailer.getTitle(),
+                        trailer.getSubTitle(),
+                        trailer.getThumbnail()
+                )).collect(Collectors.toList());
     }
 }
