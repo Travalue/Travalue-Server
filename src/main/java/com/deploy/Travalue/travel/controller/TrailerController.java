@@ -1,9 +1,9 @@
-package com.deploy.Travalue.trailer.controller;
+package com.deploy.Travalue.travel.controller;
 
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.common.exception.SuccessCode;
-import com.deploy.Travalue.trailer.service.TrailerService;
-import com.deploy.Travalue.trailer.service.dto.response.TrailersResponseDto;
+import com.deploy.Travalue.travel.service.TrailerService;
+import com.deploy.Travalue.travel.service.dto.response.TrailersResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.deploy.Travalue.trailer.service.dto.response;
+package com.deploy.Travalue.travel.service.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

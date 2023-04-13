@@ -1,4 +1,4 @@
-package com.deploy.Travalue.trailer.infrastructure;
+package com.deploy.Travalue.travel.infrastructure;
 
 import com.deploy.Travalue.domain.travel.Travel;
 import org.springframework.data.jpa.repository.JpaRepository;

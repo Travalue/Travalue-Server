@@ -1,8 +1,8 @@
-package com.deploy.Travalue.trailer.service;
+package com.deploy.Travalue.travel.service;
 
 import com.deploy.Travalue.domain.travel.Travel;
-import com.deploy.Travalue.trailer.infrastructure.TravelRepository;
-import com.deploy.Travalue.trailer.service.dto.response.TrailersResponseDto;
+import com.deploy.Travalue.travel.infrastructure.TravelRepository;
+import com.deploy.Travalue.travel.service.dto.response.TrailersResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
