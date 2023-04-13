@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class TrailerService {
+public class TravelService {
 
     private final TravelRepository travelRepository;
 
-    @Transactional(readOnly=true)
+    @Transactional
     public List<TrailersResponseDto> getTrailers() {
-        final List<Travel> travel = travelRepository.findAll();
+        final List<Travel> travel = travelRepository.findTravelBySection("trailer");
         return travel.stream()
                 .map(trailer -> TrailersResponseDto.of(
                         trailer.getId(),

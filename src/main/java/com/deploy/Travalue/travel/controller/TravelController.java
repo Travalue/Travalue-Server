@@ -2,7 +2,7 @@ package com.deploy.Travalue.travel.controller;
 
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.common.exception.SuccessCode;
-import com.deploy.Travalue.travel.service.TrailerService;
+import com.deploy.Travalue.travel.service.TravelService;
 import com.deploy.Travalue.travel.service.dto.response.TrailersResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +13,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class TrailerController {
-    private final TrailerService trailerService;
+public class TravelController {
+    private final TravelService trailerService;
 
     @ApiOperation("Trailer 전체 조회 API")
     @GetMapping("/post/trailers")
