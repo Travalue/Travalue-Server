@@ -1,18 +1,18 @@
 package com.deploy.Travalue.user.domain;
 
-import com.deploy.Travalue.common.domain.AuditingTimeEntity;
 import com.deploy.Travalue.user.dto.CreateUserDto;
 import javax.persistence.Column;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import com.deploy.Travalue.common.domain.AuditingTimeEntity;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import lombok.Builder;
 import org.hibernate.annotations.DynamicInsert;
 
 @Entity
@@ -20,15 +20,28 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends AuditingTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+
 
     @Column(nullable = false)
     private String email;
 
-    @Column(length = 50, nullable = false)
+
+    @Column(length = 50)
     private String nickname;
+
+
+    @Column()
+    @ColumnDefault("false")
+    private boolean isSignupCompleted; //TODO: 닉네임 null로 체크하기!!
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+        this.isSignupCompleted = true;
+    }
 
     @Column(length = 2083)
     private String profileImage;
