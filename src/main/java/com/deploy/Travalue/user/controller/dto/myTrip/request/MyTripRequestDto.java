@@ -1,4 +1,4 @@
-package com.deploy.Travalue.user.controller.dto;
+package com.deploy.Travalue.user.controller.dto.myTrip.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AddTripRequestDto {
+public class MyTripRequestDto {
 
     @NotBlank
     private String emoji;
