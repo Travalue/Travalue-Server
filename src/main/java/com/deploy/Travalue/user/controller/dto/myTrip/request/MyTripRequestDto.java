@@ -1,4 +1,4 @@
-package com.deploy.Travalue.user.controller.myTrip.dto.request;
+package com.deploy.Travalue.user.controller.dto.myTrip.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

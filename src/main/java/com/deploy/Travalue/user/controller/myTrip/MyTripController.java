@@ -2,7 +2,7 @@ package com.deploy.Travalue.user.controller.myTrip;
 
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.exception.SuccessCode;
-import com.deploy.Travalue.user.controller.myTrip.dto.request.MyTripRequestDto;
+import com.deploy.Travalue.user.controller.dto.myTrip.request.MyTripRequestDto;
 import com.deploy.Travalue.user.service.myTrip.MyTripService;
 import com.deploy.Travalue.user.service.myTrip.dto.response.MyTripResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,8 @@ public class MyTripController {
     private final MyTripService myTripService;
 
     @PostMapping("/profile/travel")
-    public ApiResponse createMyTrip(@RequestBody @Valid final MyTripRequestDto addTripRequestDto) {
-        myTripService.createMyTrip(1L, addTripRequestDto);
+    public ApiResponse createMyTrip(@RequestBody @Valid final MyTripRequestDto request) {
+        myTripService.createMyTrip(1L, request);
         return ApiResponse.success(SuccessCode.CREATE_MY_TRIP_SUCCESS);
     }
 

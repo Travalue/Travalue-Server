@@ -1,7 +1,7 @@
 package com.deploy.Travalue.user.service.myTrip;
 
 import com.deploy.Travalue.exception.model.NotFoundException;
-import com.deploy.Travalue.user.controller.myTrip.dto.request.MyTripRequestDto;
+import com.deploy.Travalue.user.controller.dto.myTrip.request.MyTripRequestDto;
 import com.deploy.Travalue.user.domain.User;
 import com.deploy.Travalue.user.domain.myTrip.MyTrip;
 import com.deploy.Travalue.user.infrastructure.UserRepository;
