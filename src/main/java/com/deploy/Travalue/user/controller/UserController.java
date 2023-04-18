@@ -45,11 +45,4 @@ public class UserController {
         NicknameResponseDto nicknameResponseDto = userService.checkNickname(nickname);
         return ApiResponse.success(SuccessCode.CHECK_NICKNAME_SUCCESS, nicknameResponseDto);
     }
-
-    @Auth
-    @GetMapping("/test")
-    public ApiResponse<?> login(@UserId Long userId) {
-        log.info("userId : " + userId);
-        return ApiResponse.success(SuccessCode.LOGIN_SUCCESS, null);
-    }
 }
