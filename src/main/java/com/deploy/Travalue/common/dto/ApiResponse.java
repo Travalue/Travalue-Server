@@ -1,7 +1,7 @@
 package com.deploy.Travalue.common.dto;
 
-import com.deploy.Travalue.common.exception.ErrorCode;
-import com.deploy.Travalue.common.exception.SuccessCode;
+import com.deploy.Travalue.exception.ErrorCode;
+import com.deploy.Travalue.exception.SuccessCode;
 import lombok.*;
 
 @ToString
@@ -15,7 +15,7 @@ public class ApiResponse<T> {
 
     private T data;
 
-    public static ApiResponse success(SuccessCode successCode) {
+    public static <T> ApiResponse<T> success(SuccessCode successCode) {
         return new ApiResponse<>(successCode.getStatus(), successCode.getMessage(), null);
     }
 
@@ -23,7 +23,11 @@ public class ApiResponse<T> {
         return new ApiResponse<>(successCode.getStatus(), successCode.getMessage(), data);
     }
 
-    public static ApiResponse error(ErrorCode errorCode) {
-        return new ApiResponse(errorCode.getStatus(), errorCode.getMessage(), null);
+    public static <T> ApiResponse<T> error(ErrorCode errorCode) {
+        return new ApiResponse<>(errorCode.getStatus(), errorCode.getMessage(), null);
+    }
+
+    public static <T> ApiResponse<T> error(ErrorCode errorCode, String message) {
+        return new ApiResponse<>(errorCode.getStatus(), message, null);
     }
 }
