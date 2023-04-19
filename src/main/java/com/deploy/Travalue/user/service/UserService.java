@@ -1,9 +1,16 @@
 package com.deploy.Travalue.user.service;
 
+import com.deploy.Travalue.exception.model.NotFoundException;
+import com.deploy.Travalue.user.controller.dto.MyPageResponseDto;
 import com.deploy.Travalue.user.controller.dto.NicknameResponseDto;
 import com.deploy.Travalue.user.domain.User;
+import com.deploy.Travalue.user.domain.myTrip.MyTrip;
 import com.deploy.Travalue.user.dto.CreateUserDto;
 import com.deploy.Travalue.user.infrastructure.UserRepository;
+import com.deploy.Travalue.user.infrastructure.myTrip.MyTripRepository;
+import com.deploy.Travalue.user.service.myTrip.dto.response.MyTripResponseDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+
     private final UserRepository userRepository;
+    private final MyTripRepository myTripRepository;
 
     public void updateNickname(Long userId, String nickname) {
         User user = userRepository.findById(userId)
@@ -45,5 +54,23 @@ public class UserService {
 
         log.info("회원가입 성공!!");
         return userRepository.save(user);
+    }
+
+    public MyPageResponseDto getMyPage(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        final List<MyTrip> myTripList = myTripRepository.findByUserId(userId);
+
+        List<MyTripResponseDto> myTripResponseDtoList = myTripList.stream()
+            .map(trip -> MyTripResponseDto.of(trip.getEmoji(), trip.getTravelTitle()))
+            .collect(Collectors.toList());
+
+        MyPageResponseDto myPageResponseDto = MyPageResponseDto.builder()
+            .user(user)
+            .myTripResponseDtoList(myTripResponseDtoList)
+            .build();
+
+        return myPageResponseDto;
     }
 }
