@@ -18,16 +18,16 @@ public class TravelController {
     private final TravelService travelService;
 
     @ApiOperation("Trailer 전체 조회 API")
-    @GetMapping("/post/trailers")
-    public void getTrailers() {
-//        final List<TrailersResponseDto> trailers = travelService.getTrailers();
-//        return ApiResponse.success(SuccessCode.READ_TRAILERS_SUCCESS, trailers);
+    @GetMapping("/post/trailer")
+    public ApiResponse<List<TrailersResponseDto>> getTrailers() {
+        final List<TrailersResponseDto> trailers = travelService.getTrailers();
+        return ApiResponse.success(SuccessCode.READ_TRAILERS_SUCCESS, trailers);
     }
 
     @ApiOperation("Traveller 전체 조회 API")
-    @GetMapping("/post/trailers")
-    public ApiResponse<?> getTravellers() {
+    @GetMapping("/post/traveller")
+    public ApiResponse<List<TravellersResponseDto>> getTravellers() {
         final List<TravellersResponseDto> travellers = travelService.getTravellers();
-        return ApiResponse.success(SuccessCode.READ_TRAVELLERS_SUCCESS);
+        return ApiResponse.success(SuccessCode.READ_TRAVELLERS_SUCCESS, travellers);
     }
 }

@@ -17,16 +17,16 @@ public class TravelService {
     private final TravelRepository travelRepository;
 
     @Transactional
-    public void getTrailers() {
-//        final List<Travel> travel = travelRepository.findTravelBySection("trailer");
-//        return travel.stream()
-//                .map(trailer -> TrailersResponseDto.of(
-//                        trailer.getId(),
-//                        trailer.getSubject(),
-//                        trailer.getTitle(),
-//                        trailer.getSubTitle(),
-//                        trailer.getThumbnail()
-//                )).collect(Collectors.toList());
+    public List<TrailersResponseDto> getTrailers() {
+        final List<Travel> travel = travelRepository.findTravelBySection("trailer");
+        return travel.stream()
+                .map(trailer -> TrailersResponseDto.of(
+                        trailer.getId(),
+                        trailer.getSubject(),
+                        trailer.getTitle(),
+                        trailer.getSubTitle(),
+                        trailer.getThumbnail()
+                )).collect(Collectors.toList());
     }
 
     @Transactional
