@@ -1,17 +1,19 @@
 package com.deploy.Travalue.travel.domain;
 
+import com.deploy.Travalue.common.domain.AuditingTimeEntity;
 import com.deploy.Travalue.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 
 @Entity
 @Getter
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Category {
+public class Category extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

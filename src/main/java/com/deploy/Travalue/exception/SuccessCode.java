@@ -18,11 +18,11 @@ public enum SuccessCode {
     CREATE_MY_TRIP_SUCCESS(HttpStatus.CREATED, "나의 여행지가 생성되었습니다."),
     GET_MY_TRIP_LIST_SUCCESS(HttpStatus.OK, "나의 여행지 리스트 조회성공"),
 
-
     // travel
     CREATE_CATEGORY_SUCCESS(HttpStatus.CREATED, "카테고리가 생성됐습니다."),
 
     READ_TRAILERS_SUCCESS(HttpStatus.OK, "트레일러 전체 조회 성공"),
+    READ_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 전체 조회 성공"),
     ;
 
     private final HttpStatus httpStatus;
