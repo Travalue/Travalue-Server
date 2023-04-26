@@ -19,6 +19,7 @@ public enum SuccessCode {
 
     //  Travel
     READ_TRAILERS_SUCCESS(StatusCode.SUCCESS, "트레일러 전체 조회 성공"),
+    READ_TRAVELLERS_SUCCESS(StatusCode.SUCCESS, "트레블러 전체 조회 성공"),
     ;
 
     private final StatusCode statusCode;
