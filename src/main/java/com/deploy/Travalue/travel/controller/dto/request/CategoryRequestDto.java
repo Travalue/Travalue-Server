@@ -18,8 +18,6 @@ public class CategoryRequestDto {
     @NotBlank
     private String subject;
 
-    @NotBlank
-    @Pattern(regexp = "^[가-힣a-zA-Z\\s]{1,10}$", message = "지역 이름 형식에 맞지 않습니다.")
     private String region;
 
     @NotNull

@@ -28,8 +28,8 @@ public class ControllerExceptionAdvice {
      * Travalue custom exception
      */
     @ExceptionHandler(TravalueException.class)
-    protected ResponseEntity<ApiResponse> handleBaseException(TravalueException exception) {
-        return ResponseEntity.status(exception.getStatus())
-                .body(ApiResponse.error(exception.getErrorCode()));
+    protected ResponseEntity<ApiResponse> handleBaseException(TravalueException e) {
+        return ResponseEntity.status(e.getStatus())
+                .body(ApiResponse.error(e.getErrorCode()));
     }
 }
