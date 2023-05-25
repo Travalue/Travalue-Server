@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class UserService {
 
     public void updateNickname(Long userId, String nickname) {
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("DB에 존재하지 않는 USER ID입니다"));
+                .orElseThrow(() -> new IllegalArgumentException("DB에 존재하지 않는 USER ID입니다"));
 
         user.updateNickname(nickname);
     }
@@ -35,13 +37,16 @@ public class UserService {
     @Transactional
     User registerUser(CreateUserDto createUserDto) {
         // 닉네임 중복 체크
-        User user = userRepository.findByNickname(createUserDto.getNickname())
-            .orElseThrow(
-                () -> new IllegalArgumentException("중복 닉네임 입니다!!")); //여기서 중복 처리해줘야되나????????
+        Optional<User> duplicatedNickname = userRepository.findByNickname(createUserDto.getNickname());
 
-        user = User.builder()
-            .createUserDto(createUserDto)
-            .build();
+        if (duplicatedNickname.isPresent()) {
+            // TODO: 카카오에서 받아온 닉네임을 사용하는 데 보통 이름으로 설정되어 있어 중복 될 가능성 높음 (따로 처리해줘야됨)
+            throw new IllegalArgumentException("중복 닉네임 입니다");
+        }
+
+        User user = User.builder()
+                .createUserDto(createUserDto)
+                .build();
 
         log.info("회원가입 성공!!");
         return userRepository.save(user);
