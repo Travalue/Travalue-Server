@@ -4,12 +4,16 @@ import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.user.controller.dto.NicknameRequestDto;
 import com.deploy.Travalue.user.controller.dto.NicknameResponseDto;
+import com.deploy.Travalue.user.controller.dto.UserBlockRequestDto;
 import com.deploy.Travalue.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
+
 import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +36,7 @@ public class UserController {
     @ApiOperation("닉네임 등록 / 수정")
     @PutMapping("/nickname")
     public ApiResponse<?> updateNickname(
-        @Valid @RequestBody final NicknameRequestDto nicknameRequestDto, @UserId Long userId) {
+            @Valid @RequestBody final NicknameRequestDto nicknameRequestDto, @UserId Long userId) {
         log.info("userId :" + userId);
         String nickname = nicknameRequestDto.getNickname();
         userService.updateNickname(userId, nickname);
@@ -51,5 +55,16 @@ public class UserController {
     public ApiResponse<?> login(@UserId Long userId) {
         log.info("userId : " + userId);
         return ApiResponse.success(SuccessCode.LOGIN_SUCCESS, null);
+    }
+
+    @Auth
+    @PostMapping("/block")
+    public ApiResponse<?> userBlock(@UserId Long userId,
+                                    @RequestBody UserBlockRequestDto userBlockRequestDto) {
+        log.info("유저 차단  userId : " + userId + " userBolckRequestDto : " + userBlockRequestDto.toString());
+
+        userService.blockUser(userId, userBlockRequestDto);
+
+        return ApiResponse.success(SuccessCode.USER_BLOCK_SUCCESS, null);
     }
 }

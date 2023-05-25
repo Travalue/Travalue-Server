@@ -16,6 +16,7 @@ public enum SuccessCode {
     CHECK_NICKNAME_SUCCESS(StatusCode.SUCCESS, "닉네임 중복 검사가 완료되었습니다."),
     CREATE_MY_TRIP_SUCCESS(StatusCode.CREATED, "나의 여행지가 생성되었습니다."),
     GET_MY_TRIP_LIST_SUCCESS(StatusCode.SUCCESS, "나의 여행지 리스트 조회성공"),
+    USER_BLOCK_SUCCESS(StatusCode.SUCCESS, "유저 차단 / 차단 해제 성공"),
 
     //  Travel
     READ_TRAILERS_SUCCESS(StatusCode.SUCCESS, "트레일러 전체 조회 성공"),
@@ -24,7 +25,7 @@ public enum SuccessCode {
     private final StatusCode statusCode;
     private final String message;
 
-    public int getStatus(){
+    public int getStatus() {
         return statusCode.getHttpStatusCode();
     }
 }
