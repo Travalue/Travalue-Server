@@ -4,6 +4,9 @@ import com.deploy.Travalue.config.interceptor.Auth;
 import com.deploy.Travalue.config.jwt.JwtService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+
+import com.deploy.Travalue.exception.ErrorCode;
+import com.deploy.Travalue.exception.model.TravalueException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -29,7 +32,7 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         ModelAndViewContainer mavContainer, @NotNull NativeWebRequest webRequest,
         WebDataBinderFactory binderFactory) {
         if (parameter.getMethodAnnotation(Auth.class) == null) {
-            throw new RuntimeException("인증이 필요한 컨트롤러 입니다. @Auth 어노테이션을 붙여주세요.");
+            throw new TravalueException("인증이 필요한 컨트롤러 입니다. @Auth 어노테이션을 붙여주세요.", ErrorCode.NO_ANNOTATION_EXCEPTION);
         }
 
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
@@ -37,18 +40,18 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         ;
 
         if (!jwtService.verifyToken(token)) {
-            throw new RuntimeException(
+            throw new TravalueException(
                 String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
-                    parameter.getMethod()));
+                    parameter.getMethod()), ErrorCode.UNAUTHORIZED_EXCEPTION);
         }
 
         final String subject = jwtService.getSubject(token);
         try {
             return Long.parseLong(subject);
         } catch (final NumberFormatException e) {
-            throw new RuntimeException(
+            throw new TravalueException(
                 String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
-                    parameter.getMethod()));
+                    parameter.getMethod()), ErrorCode.UNAUTHORIZED_EXCEPTION);
         }
     }
 }
