@@ -2,7 +2,9 @@ package com.deploy.Travalue.user.controller.dto;
 
 import com.deploy.Travalue.user.domain.User;
 import com.deploy.Travalue.user.service.myTrip.dto.response.MyTripResponseDto;
+
 import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,14 +18,20 @@ public class MyPageResponseDto {
     String profileImage;
     String description;
     int travelCount;
-    List<MyTripResponseDto> myTripResponseDtoList;
+    List<MyTripResponseDto> travelList;
+    int sharedTravelCount;
+    List<SharedTravelDto> sharedTravel;
+    int travelLikeCount;
 
     @Builder
-    public MyPageResponseDto(User user, List<MyTripResponseDto> myTripResponseDtoList) {
+    public MyPageResponseDto(User user, List<MyTripResponseDto> travelList, int sharedTravelCount, List<SharedTravelDto> sharedTravel, int travelLikeCount) {
         this.nickname = user.getNickname();
         this.profileImage = user.getProfileImage();
         this.description = user.getDescription();
         this.travelCount = user.getTravelCount();
-        this.myTripResponseDtoList = myTripResponseDtoList;
+        this.travelList = travelList;
+        this.sharedTravelCount = sharedTravelCount;
+        this.sharedTravel = sharedTravel;
+        this.travelLikeCount = travelLikeCount;
     }
 }
