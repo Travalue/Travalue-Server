@@ -29,7 +29,4 @@ public enum SuccessCode {
     private final HttpStatus httpStatus;
     private final String message;
 
-    public int getStatus(){
-        return statusCode.getHttpStatusCode();
-    }
 }
