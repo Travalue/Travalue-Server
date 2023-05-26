@@ -27,7 +27,7 @@ public class AuthController {
     public ApiResponse<LoginResponse> login(@Valid @RequestBody final LoginRequest loginRequest) {
         final AuthService authService = authServiceProvider.getAuthService(loginRequest.getSocialType());
         final Long userId = authService.login(loginRequest);
-        final String token = jwtService.issuedToken(String.valueOf(userId), "USER", 60 * 60 * 24 * 30L);
+        final String token = jwtService.issuedToken(String.valueOf(userId), "USER", 60 * 60 * 24 * 365L); // TODO:임의로 365일 (기존 30일)
         return ApiResponse.success(SuccessCode.LOGIN_SUCCESS, new LoginResponse(token, userId));
     }
 }

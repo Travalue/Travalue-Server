@@ -2,6 +2,7 @@ package com.deploy.Travalue.user.controller;
 
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.exception.SuccessCode;
+import com.deploy.Travalue.user.controller.dto.MyPageResponseDto;
 import com.deploy.Travalue.user.controller.dto.NicknameRequestDto;
 import com.deploy.Travalue.user.controller.dto.NicknameResponseDto;
 import com.deploy.Travalue.user.service.UserService;
@@ -28,6 +29,15 @@ public class UserController {
     private final UserService userService;
 
     @Auth
+    @ApiOperation("마이페이지 조회")
+    @GetMapping("/")
+    public ApiResponse<?> getMyPage(@UserId Long userId) {
+        log.info("userId :" + userId);
+        MyPageResponseDto myPageResponseDto = userService.getMyPage(userId);
+        return ApiResponse.success(SuccessCode.GET_MY_PAGE_SUCCESS, myPageResponseDto);
+    }
+
+    @Auth
     @Transactional
     @ApiOperation("닉네임 등록 / 수정")
     @PutMapping("/nickname")
@@ -44,12 +54,5 @@ public class UserController {
     public ApiResponse<NicknameResponseDto> updateNickname(@Valid @RequestParam String nickname) {
         NicknameResponseDto nicknameResponseDto = userService.checkNickname(nickname);
         return ApiResponse.success(SuccessCode.CHECK_NICKNAME_SUCCESS, nicknameResponseDto);
-    }
-
-    @Auth
-    @GetMapping("/test")
-    public ApiResponse<?> login(@UserId Long userId) {
-        log.info("userId : " + userId);
-        return ApiResponse.success(SuccessCode.LOGIN_SUCCESS, null);
     }
 }
