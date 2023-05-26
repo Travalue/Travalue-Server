@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 public class CategoryRequestDto {
 
     @NotBlank
-    @Pattern(regexp = "^[가-힣a-zA-Z\\s]{1,10}$", message = "카테고리 제목 형식에 맞지 않습니다.")
+    @Pattern(regexp = "^[가-힣a-zA-Z\\s]{1,10}$", message = "카테고리 제목 형식에 맞지 않습니다")
     private String title;
 
     @NotBlank
