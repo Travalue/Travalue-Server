@@ -20,6 +20,8 @@ public enum SuccessCode {
 
     // travel
     CREATE_CATEGORY_SUCCESS(HttpStatus.CREATED, "카테고리가 생성됐습니다."),
+    UPDATE_CATEGORY_SUCCESS(HttpStatus.OK, "카테고리 업데이트에 성공했습니다."),
+    DELETE_CATEGORY_SUCCESS(HttpStatus.OK, "카테고리가 삭제됐습니다."),
 
     READ_TRAILERS_SUCCESS(HttpStatus.OK, "트레일러 전체 조회 성공"),
     READ_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 전체 조회 성공"),

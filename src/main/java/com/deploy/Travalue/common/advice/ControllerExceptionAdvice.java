@@ -33,6 +33,6 @@ public class ControllerExceptionAdvice {
     @ExceptionHandler(TravalueException.class)
     protected ResponseEntity<ApiResponse> handleBaseException(TravalueException e) {
         return ResponseEntity.status(e.getStatus())
-                .body(ApiResponse.error(e.getErrorCode()));
+                .body(ApiResponse.error(e.getErrorCode(), e.getMessage()));
     }
 }

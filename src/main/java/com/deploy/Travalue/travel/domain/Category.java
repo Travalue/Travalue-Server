@@ -46,4 +46,12 @@ public class Category extends AuditingTimeEntity {
     public static Category newInstance(final User user, final String title, final String thumbnail, final String subject, final  String region) {
         return new Category(user, title, thumbnail, subject, region);
     }
+
+    public void update (final User user, final String title, final String thumbnail, final String subject, final  String region) {
+        this.user = user;
+        this.title = title;
+        this.thumbnail = thumbnail;
+        this.subject = subject;
+        this.region = region;
+    }
 }

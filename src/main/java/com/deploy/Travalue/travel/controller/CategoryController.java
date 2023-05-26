@@ -26,9 +26,26 @@ public class CategoryController {
     @Auth
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ApiResponse createCategory(@UserId Long userId, @ModelAttribute @Valid final CategoryRequestDto request) {
+    public ApiResponse create(@UserId Long userId, @ModelAttribute @Valid final CategoryRequestDto request) {
         final String imagePath = s3Service.uploadImage(request.getThumbnail(), "category");
-        categoryService.createCategory(userId, imagePath, request);
+        categoryService.create(userId, imagePath, request);
         return ApiResponse.success(SuccessCode.CREATE_CATEGORY_SUCCESS);
+    }
+
+    @Auth
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "{categoryId}")
+    public ApiResponse update(@UserId Long userId, @PathVariable final Long categoryId, @ModelAttribute @Valid final CategoryRequestDto request) {
+        final String imagePath = s3Service.uploadImage(request.getThumbnail(), "category");
+        categoryService.update(userId, categoryId, imagePath, request);
+        return ApiResponse.success(SuccessCode.UPDATE_CATEGORY_SUCCESS);
+    }
+
+    @Auth
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "{categoryId}")
+    public ApiResponse delete(@UserId Long userId, @PathVariable final Long categoryId) {
+        categoryService.delete(userId, categoryId);
+        return ApiResponse.success(SuccessCode.DELETE_CATEGORY_SUCCESS);
     }
 }
