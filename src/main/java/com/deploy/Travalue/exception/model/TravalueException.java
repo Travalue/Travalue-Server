@@ -13,6 +13,6 @@ public class TravalueException extends RuntimeException {
     }
 
     public int getStatus() {
-        return errorCode.getStatus();
+        return errorCode.getHttpStatus().value();
     }
 }
