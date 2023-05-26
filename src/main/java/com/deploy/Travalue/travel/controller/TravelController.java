@@ -8,6 +8,7 @@ import com.deploy.Travalue.travel.service.dto.response.TravelResponseDto;
 import com.deploy.Travalue.travel.service.dto.response.TravellersResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +40,12 @@ public class TravelController {
     public ApiResponse<TravelResponseDto> getTravellerById(@PathVariable("id") Long travelId) {
         final TravelResponseDto data = travelService.getTravellerById(travelId);
         return ApiResponse.success(SuccessCode.READ_TRAVEL_SUCCESS, data);
+    }
+
+    @ApiOperation("Traveller 삭제 API")
+    @DeleteMapping("/post/{id}")
+    public ApiResponse deleteTravelById(@PathVariable("id") Long travelId) {
+        travelService.deleteTravelById(travelId);
+        return ApiResponse.success(SuccessCode.DELETE_TRAVEL_SUCCESS);
     }
 }
