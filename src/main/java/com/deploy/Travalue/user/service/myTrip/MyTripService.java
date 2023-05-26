@@ -29,12 +29,4 @@ public class MyTripService {
                 request.getTravelTitle()
         ));
     }
-
-    public List<MyTripResponseDto> getMyTripList(final Long userId) {
-        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
-        final List<MyTrip> myTripList = myTripRepository.findByUserId(userId);
-
-        return myTripList.stream()
-                .map(trip -> MyTripResponseDto.of(trip.getEmoji(), trip.getTravelTitle())).collect(Collectors.toList());
-    }
 }
