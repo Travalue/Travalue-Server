@@ -5,6 +5,7 @@ import com.deploy.Travalue.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Travel extends AuditingTimeEntity {
@@ -52,4 +54,9 @@ public class Travel extends AuditingTimeEntity {
     @Column(nullable = false)
     @ColumnDefault("true")
     private boolean isPublic;
+
+    public void increaseViewCount() {
+        int currentViewCount = getViewCount();
+        setViewCount(++currentViewCount);
+    }
 }
