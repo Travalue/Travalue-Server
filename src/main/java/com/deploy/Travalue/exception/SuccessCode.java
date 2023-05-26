@@ -18,6 +18,7 @@ public enum SuccessCode {
     CREATE_MY_TRIP_SUCCESS(HttpStatus.CREATED, "나의 여행지가 생성되었습니다."),
     GET_MY_TRIP_LIST_SUCCESS(HttpStatus.OK, "나의 여행지 리스트 조회성공"),
     GET_MY_PAGE_SUCCESS(HttpStatus.OK, "마이 페이지 조회성공"),
+    USER_BLOCK_SUCCESS(HttpStatus.OK, "유저 차단 / 차단 해제 성공"),
 
     // travel
     CREATE_CATEGORY_SUCCESS(HttpStatus.CREATED, "카테고리가 생성됐습니다."),
@@ -32,5 +33,4 @@ public enum SuccessCode {
 
     private final HttpStatus httpStatus;
     private final String message;
-
 }
