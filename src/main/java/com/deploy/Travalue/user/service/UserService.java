@@ -7,6 +7,12 @@ import com.deploy.Travalue.user.domain.block.BlockUser;
 import com.deploy.Travalue.user.dto.CreateUserDto;
 import com.deploy.Travalue.user.infrastructure.block.BlockUserRepository;
 import com.deploy.Travalue.user.infrastructure.UserRepository;
+import com.deploy.Travalue.user.infrastructure.myTrip.MyTripRepository;
+import com.deploy.Travalue.user.service.myTrip.dto.response.MyTripResponseDto;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,8 +25,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+
     private final UserRepository userRepository;
     private final BlockUserRepository blockUserRepository;
+    private final MyTripRepository myTripRepository;
+    private final TravelRepository travelRepository;
+    private final LikeTravelRepository likeTravelRepository;
 
     public void updateNickname(Long userId, String nickname) {
         User user = userRepository.findById(userId)
@@ -54,6 +64,35 @@ public class UserService {
 
         log.info("회원가입 성공!!");
         return userRepository.save(user);
+    }
+
+    public MyPageResponseDto getMyPage(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        final List<MyTrip> myTripList = myTripRepository.findByUserId(userId);
+
+        List<MyTripResponseDto> travelList = myTripList.stream()
+                .map(trip -> MyTripResponseDto.of(trip.getEmoji(), trip.getTravelTitle()))
+                .collect(Collectors.toList());
+
+        List<SharedTravelDto> sharedTravelDtoList = travelRepository.findSharedTravelList(user);
+        int sharedTravelCount = 0;
+        for (SharedTravelDto sharedTravelDto : sharedTravelDtoList) {
+            sharedTravelCount += sharedTravelDto.getCount();
+        }
+
+        int travelLikeCount = likeTravelRepository.countLikeTravelByUser(user);
+
+        MyPageResponseDto myPageResponseDto = MyPageResponseDto.builder()
+                .user(user)
+                .travelList(travelList)
+                .sharedTravelCount(sharedTravelCount)
+                .sharedTravel(sharedTravelDtoList)
+                .travelLikeCount(travelLikeCount)
+                .build();
+
+        return myPageResponseDto;
     }
 
     @Transactional

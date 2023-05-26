@@ -2,6 +2,7 @@ package com.deploy.Travalue.user.controller;
 
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.exception.SuccessCode;
+import com.deploy.Travalue.user.controller.dto.MyPageResponseDto;
 import com.deploy.Travalue.user.controller.dto.NicknameRequestDto;
 import com.deploy.Travalue.user.controller.dto.NicknameResponseDto;
 import com.deploy.Travalue.user.controller.dto.UserBlockRequestDto;
@@ -30,6 +31,15 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 
     private final UserService userService;
+
+    @Auth
+    @ApiOperation("마이페이지 조회")
+    @GetMapping("/")
+    public ApiResponse<?> getMyPage(@UserId Long userId) {
+        log.info("userId :" + userId);
+        MyPageResponseDto myPageResponseDto = userService.getMyPage(userId);
+        return ApiResponse.success(SuccessCode.GET_MY_PAGE_SUCCESS, myPageResponseDto);
+    }
 
     @Auth
     @Transactional

@@ -47,3 +47,6 @@ application-local.yml
 
 ### application-aws.yml ###
 application-aws.yml
+
+### Mac ###
+.DS_Store

@@ -11,15 +11,13 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/category")
 public class CategoryController {
 
     private final S3Service s3Service;
@@ -27,10 +25,27 @@ public class CategoryController {
 
     @Auth
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/category", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ApiResponse createCategory(@UserId Long userId, @ModelAttribute @Valid final CategoryRequestDto request) {
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ApiResponse create(@UserId Long userId, @ModelAttribute @Valid final CategoryRequestDto request) {
         final String imagePath = s3Service.uploadImage(request.getThumbnail(), "category");
-        categoryService.createCategory(userId, imagePath, request);
+        categoryService.create(userId, imagePath, request);
         return ApiResponse.success(SuccessCode.CREATE_CATEGORY_SUCCESS);
+    }
+
+    @Auth
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "{categoryId}")
+    public ApiResponse update(@UserId Long userId, @PathVariable final Long categoryId, @ModelAttribute @Valid final CategoryRequestDto request) {
+        final String imagePath = s3Service.uploadImage(request.getThumbnail(), "category");
+        categoryService.update(userId, categoryId, imagePath, request);
+        return ApiResponse.success(SuccessCode.UPDATE_CATEGORY_SUCCESS);
+    }
+
+    @Auth
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "{categoryId}")
+    public ApiResponse delete(@UserId Long userId, @PathVariable final Long categoryId) {
+        categoryService.delete(userId, categoryId);
+        return ApiResponse.success(SuccessCode.DELETE_CATEGORY_SUCCESS);
     }
 }
