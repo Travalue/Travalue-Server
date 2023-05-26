@@ -23,6 +23,8 @@ public enum SuccessCode {
 
     READ_TRAILERS_SUCCESS(HttpStatus.OK, "트레일러 전체 조회 성공"),
     READ_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 전체 조회 성공"),
+
+    READ_TRAVEL_SUCCESS(HttpStatus.OK, "트레블러/트레일러 상세 조회 성공"),
     ;
 
     private final HttpStatus httpStatus;
