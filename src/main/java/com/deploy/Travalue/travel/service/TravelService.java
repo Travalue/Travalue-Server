@@ -99,4 +99,10 @@ public class TravelService {
 
         return data;
     }
+
+    public void deleteTravelById(Long travelId) {
+        Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
+        travel.setDeleted(true);
+        travelRepository.save(travel);
+    }
 }

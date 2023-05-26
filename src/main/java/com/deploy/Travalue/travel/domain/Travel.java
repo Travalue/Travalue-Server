@@ -55,6 +55,10 @@ public class Travel extends AuditingTimeEntity {
     @ColumnDefault("true")
     private boolean isPublic;
 
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean isDeleted;
+
     public void increaseViewCount() {
         int currentViewCount = getViewCount();
         setViewCount(++currentViewCount);
