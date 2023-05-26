@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface TravelRepository extends JpaRepository<Travel, Long>{
+public interface TravelRepository extends JpaRepository<Travel, Long>, TravelCustomRepository {
     List<Travel> findTravelBySection(String section);
 }

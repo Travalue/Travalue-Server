@@ -25,23 +25,15 @@ public class User extends AuditingTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private String email;
-
 
     @Column(length = 50)
     private String nickname;
 
-
     @Column()
     @ColumnDefault("false")
     private boolean isSignupCompleted; //TODO: 닉네임 null로 체크하기!!
-
-    public void updateNickname(String nickname) {
-        this.nickname = nickname;
-        this.isSignupCompleted = true;
-    }
 
     @Column(length = 2083)
     private String profileImage;
@@ -57,7 +49,6 @@ public class User extends AuditingTimeEntity {
     @Embedded
     private SocialInformation socialInformation;
 
-
     @Builder
     public User(Long id, String description, int travelCount, CreateUserDto createUserDto) {
         SocialInformation socialInformation = SocialInformation.builder()
@@ -71,5 +62,10 @@ public class User extends AuditingTimeEntity {
         this.description = description;
         this.travelCount = travelCount;
         this.socialInformation = socialInformation;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+        this.isSignupCompleted = true;
     }
 }
