@@ -15,6 +15,7 @@ public enum SuccessCode {
     // user
     NICKNAME_SUCCESS(HttpStatus.OK, "닉네임 업데이트가 완료되었습니다."),
     CHECK_NICKNAME_SUCCESS(HttpStatus.OK, "닉네임 중복 검사가 완료되었습니다."),
+    UPDATE_PROFILE_SUCCESS(HttpStatus.OK, "프로필 업데이트가 완료되었습니다."),
     CREATE_MY_TRIP_SUCCESS(HttpStatus.CREATED, "나의 여행지가 생성되었습니다."),
     GET_MY_TRIP_LIST_SUCCESS(HttpStatus.OK, "나의 여행지 리스트 조회성공"),
     GET_MY_PAGE_SUCCESS(HttpStatus.OK, "마이 페이지 조회성공"),

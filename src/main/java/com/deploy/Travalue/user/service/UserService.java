@@ -1,9 +1,12 @@
 package com.deploy.Travalue.user.service;
 
-import com.deploy.Travalue.user.controller.dto.NicknameResponseDto;
-import com.deploy.Travalue.user.controller.dto.UserBlockRequestDto;
+import com.deploy.Travalue.exception.model.NotFoundException;
+import com.deploy.Travalue.travel.infrastructure.LikeTravelRepository;
+import com.deploy.Travalue.travel.infrastructure.TravelRepository;
+import com.deploy.Travalue.user.controller.dto.*;
 import com.deploy.Travalue.user.domain.User;
 import com.deploy.Travalue.user.domain.block.BlockUser;
+import com.deploy.Travalue.user.domain.myTrip.MyTrip;
 import com.deploy.Travalue.user.dto.CreateUserDto;
 import com.deploy.Travalue.user.infrastructure.block.BlockUserRepository;
 import com.deploy.Travalue.user.infrastructure.UserRepository;
@@ -124,5 +127,13 @@ public class UserService {
                     .orElseThrow(() -> new IllegalArgumentException("차단한 이력이 없는 유저입니다."));
             blockUserRepository.delete(blockUser);
         }
+    }
+
+    @Transactional
+    public void updateProfile(UpdateProfileRequestDto updateProfileRequestDto, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        user.updateProfile(updateProfileRequestDto);
     }
 }

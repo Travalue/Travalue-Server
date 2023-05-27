@@ -2,10 +2,7 @@ package com.deploy.Travalue.user.controller;
 
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.exception.SuccessCode;
-import com.deploy.Travalue.user.controller.dto.MyPageResponseDto;
-import com.deploy.Travalue.user.controller.dto.NicknameRequestDto;
-import com.deploy.Travalue.user.controller.dto.NicknameResponseDto;
-import com.deploy.Travalue.user.controller.dto.UserBlockRequestDto;
+import com.deploy.Travalue.user.controller.dto.*;
 import com.deploy.Travalue.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
@@ -13,13 +10,7 @@ import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.deploy.Travalue.config.interceptor.Auth;
 import com.deploy.Travalue.config.resolver.UserId;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +25,7 @@ public class UserController {
 
     @Auth
     @ApiOperation("마이페이지 조회")
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<?> getMyPage(@UserId Long userId) {
         log.info("userId :" + userId);
         MyPageResponseDto myPageResponseDto = userService.getMyPage(userId);
@@ -58,6 +49,13 @@ public class UserController {
     public ApiResponse<NicknameResponseDto> updateNickname(@Valid @RequestParam String nickname) {
         NicknameResponseDto nicknameResponseDto = userService.checkNickname(nickname);
         return ApiResponse.success(SuccessCode.CHECK_NICKNAME_SUCCESS, nicknameResponseDto);
+    }
+
+    @Auth
+    @PatchMapping("")
+    public ApiResponse<NicknameResponseDto> updateProfile(@Valid @RequestBody final UpdateProfileRequestDto updateProfileRequestDto, @UserId Long userId) {
+        userService.updateProfile(updateProfileRequestDto, userId);
+        return ApiResponse.success(SuccessCode.UPDATE_PROFILE_SUCCESS);
     }
 
     @Auth
