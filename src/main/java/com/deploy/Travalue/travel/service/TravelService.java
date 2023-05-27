@@ -8,23 +8,26 @@ import com.deploy.Travalue.travel.domain.TravelPin;
 import com.deploy.Travalue.travel.infrastructure.TravelPinRepository;
 import com.deploy.Travalue.travel.infrastructure.TravelRepository;
 import com.deploy.Travalue.travel.service.dto.response.*;
+import com.deploy.Travalue.user.controller.dto.SharedTravelDetailDto;
 import com.deploy.Travalue.user.domain.User;
 import com.deploy.Travalue.user.infrastructure.UserRepository;
 import com.deploy.Travalue.travel.infrastructure.TravelContentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TravelService {
 
+    private final UserRepository userRepository;
     private final TravelRepository travelRepository;
     private final TravelPinRepository travelPinRepository;
     private final TravelContentRepository travelContentRepository;
@@ -59,7 +62,7 @@ public class TravelService {
 
         final List<TravelInformation> travelInformation = new ArrayList<>();
 
-        for(TravelPin pin: travelPins) {
+        for (TravelPin pin : travelPins) {
             travelInformation.add(pin.getTravelInformation());
         }
 
@@ -104,5 +107,19 @@ public class TravelService {
         Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
         travel.setDeleted(true);
         travelRepository.save(travel);
+    }
+
+    public List<SharedTravelDetailDto> getTravellersByProfileOwnerId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        List<Travel> travelList = travelRepository.findTravelByUser(user);
+
+        // List<Travel> -> List<SharedTravelDetailDto>
+        List<SharedTravelDetailDto> sharedTravelDetailDtoList = travelList.stream()
+                .map(travel -> SharedTravelDetailDto.of(travel))
+                .collect(Collectors.toList());
+
+        return sharedTravelDetailDtoList;
     }
 }
