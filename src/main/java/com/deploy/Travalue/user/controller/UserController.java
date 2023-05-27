@@ -61,13 +61,6 @@ public class UserController {
     }
 
     @Auth
-    @GetMapping("/test")
-    public ApiResponse<?> login(@UserId Long userId) {
-        log.info("userId : " + userId);
-        return ApiResponse.success(SuccessCode.LOGIN_SUCCESS, null);
-    }
-
-    @Auth
     @PostMapping("/block")
     public ApiResponse<?> userBlock(@UserId Long userId,
                                     @RequestBody UserBlockRequestDto userBlockRequestDto) {
