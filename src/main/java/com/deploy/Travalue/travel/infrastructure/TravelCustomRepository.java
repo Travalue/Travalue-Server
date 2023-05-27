@@ -1,5 +1,6 @@
 package com.deploy.Travalue.travel.infrastructure;
 
+import com.deploy.Travalue.user.controller.dto.SharedTravelDetailDto;
 import com.deploy.Travalue.user.controller.dto.SharedTravelDto;
 import com.deploy.Travalue.user.domain.User;
 

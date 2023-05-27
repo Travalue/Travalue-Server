@@ -1,16 +1,21 @@
 package com.deploy.Travalue.user.domain;
 
+import com.deploy.Travalue.user.controller.dto.UpdateProfileRequestDto;
 import com.deploy.Travalue.user.dto.CreateUserDto;
+
 import javax.persistence.Column;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.deploy.Travalue.common.domain.AuditingTimeEntity;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import org.hibernate.annotations.ColumnDefault;
 import lombok.Builder;
 import org.hibernate.annotations.DynamicInsert;
@@ -52,9 +57,9 @@ public class User extends AuditingTimeEntity {
     @Builder
     public User(Long id, String description, int travelCount, CreateUserDto createUserDto) {
         SocialInformation socialInformation = SocialInformation.builder()
-            .socialId(createUserDto.getSocialId())
-            .socialType(createUserDto.getSocialType())
-            .build();
+                .socialId(createUserDto.getSocialId())
+                .socialType(createUserDto.getSocialType())
+                .build();
         this.id = id;
         this.email = createUserDto.getEmail();
         this.nickname = createUserDto.getNickname();
@@ -67,5 +72,10 @@ public class User extends AuditingTimeEntity {
     public void updateNickname(String nickname) {
         this.nickname = nickname;
         this.isSignupCompleted = true;
+    }
+
+    public void updateProfile(UpdateProfileRequestDto updateProfileRequestDto) {
+        this.nickname = updateProfileRequestDto.getNickname();
+        this.description = updateProfileRequestDto.getDescription();
     }
 }
