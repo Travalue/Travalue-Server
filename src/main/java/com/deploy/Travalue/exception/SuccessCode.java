@@ -30,6 +30,7 @@ public enum SuccessCode {
     READ_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 전체 조회 성공"),
 
     READ_SHARED_TRAVELLERS_SUCCESS(HttpStatus.OK, "공유 중인 트레블러 전체 조회 성공"),
+    READ_SHARED_TRAVELLERS_BY_CATEGORY_SUCCESS(HttpStatus.OK, "공유 중인 트레블러 카테고리별 조회 성공"),
 
     READ_TRAVEL_SUCCESS(HttpStatus.OK, "트레블러/트레일러 상세 조회 성공"),
 

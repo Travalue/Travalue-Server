@@ -58,4 +58,15 @@ public class TravelController {
         final List<SharedTravelDetailDto> travellers = travelService.getTravellersByProfileOwnerId(userId);
         return ApiResponse.success(SuccessCode.READ_SHARED_TRAVELLERS_SUCCESS, travellers);
     }
+
+    @ApiOperation("공유 중인 Traveller 카테고리별 조회 API")
+    @GetMapping("/post/traveller/{userId}/{categoryId}")
+    public ApiResponse<?> getTravellers(@PathVariable Long userId, @PathVariable Long categoryId) {
+        // TODO: 이거 getRravellers 함수명 3곳에서 공유했는데 변경해주는게 좋겠지? 오버로딩으로 되길래 사용했는데...
+        log.info("공유 중인 Travellser 카테고리별 조회 API - userId : " + userId + " categoryId : " + categoryId);
+
+        final List<SharedTravelDetailDto> travellers = travelService.getTravellersByCategory(userId, categoryId);
+
+        return ApiResponse.success(SuccessCode.READ_SHARED_TRAVELLERS_BY_CATEGORY_SUCCESS, travellers);
+    }
 }

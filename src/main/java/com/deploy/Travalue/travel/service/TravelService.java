@@ -1,10 +1,8 @@
 package com.deploy.Travalue.travel.service;
 
 import com.deploy.Travalue.exception.model.NotFoundException;
-import com.deploy.Travalue.travel.domain.Travel;
-import com.deploy.Travalue.travel.domain.TravelContent;
-import com.deploy.Travalue.travel.domain.TravelInformation;
-import com.deploy.Travalue.travel.domain.TravelPin;
+import com.deploy.Travalue.travel.domain.*;
+import com.deploy.Travalue.travel.infrastructure.CategoryRepository;
 import com.deploy.Travalue.travel.infrastructure.TravelPinRepository;
 import com.deploy.Travalue.travel.infrastructure.TravelRepository;
 import com.deploy.Travalue.travel.service.dto.response.*;
@@ -23,12 +21,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class TravelService {
 
     private final UserRepository userRepository;
     private final TravelRepository travelRepository;
+    private final CategoryRepository categoryRepository;
     private final TravelPinRepository travelPinRepository;
     private final TravelContentRepository travelContentRepository;
 
@@ -114,6 +113,23 @@ public class TravelService {
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
         List<Travel> travelList = travelRepository.findTravelByUser(user);
+
+        // List<Travel> -> List<SharedTravelDetailDto>
+        List<SharedTravelDetailDto> sharedTravelDetailDtoList = travelList.stream()
+                .map(travel -> SharedTravelDetailDto.of(travel))
+                .collect(Collectors.toList());
+
+        return sharedTravelDetailDtoList;
+    }
+
+    public List<SharedTravelDetailDto> getTravellersByCategory(Long userId, Long categoryId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NotFoundException("존재하지 카테고리 id 입니다."));
+
+        List<Travel> travelList = travelRepository.findTravelByUserAndCategory(user, category);
 
         // List<Travel> -> List<SharedTravelDetailDto>
         List<SharedTravelDetailDto> sharedTravelDetailDtoList = travelList.stream()
