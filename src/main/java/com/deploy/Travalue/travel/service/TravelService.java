@@ -138,4 +138,14 @@ public class TravelService {
 
         return sharedTravelDetailDtoList;
     }
+
+    public List<TravellersResponseDto> getSearchedTravellers(String keyword) {
+        List<Travel> travelList = travelRepository.findTravelByIsPublicTrueAndIsDeletedFalseAndSectionAndTitleContainingOrSubTitleContaining("traveller", keyword, keyword);
+        List<TravellersResponseDto> searchedTravellerList = travelList.stream().map(travel -> TravellersResponseDto.of(
+                travel.getId(),
+                travel.getThumbnail()
+        )).collect(Collectors.toList());
+
+        return searchedTravellerList;
+    }
 }

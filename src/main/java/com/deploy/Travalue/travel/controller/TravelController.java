@@ -10,10 +10,7 @@ import com.deploy.Travalue.user.controller.dto.SharedTravelDetailDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -68,5 +65,12 @@ public class TravelController {
         final List<SharedTravelDetailDto> travellers = travelService.getTravellersByCategory(userId, categoryId);
 
         return ApiResponse.success(SuccessCode.READ_SHARED_TRAVELLERS_BY_CATEGORY_SUCCESS, travellers);
+    }
+
+    @ApiOperation("Traveller 검색 API")
+    @GetMapping("/post/traveller/")
+    public ApiResponse<List<TravellersResponseDto>> getSearchedTravellers(@RequestParam String keyword) {
+        final List<TravellersResponseDto> data = travelService.getSearchedTravellers(keyword);
+        return ApiResponse.success(SuccessCode.READ_SEARCHED_TRAVELLERS_SUCCESS, data);
     }
 }
