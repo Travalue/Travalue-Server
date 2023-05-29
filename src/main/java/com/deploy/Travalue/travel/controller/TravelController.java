@@ -3,6 +3,7 @@ package com.deploy.Travalue.travel.controller;
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.travel.service.TravelService;
+import com.deploy.Travalue.travel.service.dto.response.HotTravellersResponseDto;
 import com.deploy.Travalue.travel.service.dto.response.TrailersResponseDto;
 import com.deploy.Travalue.travel.service.dto.response.TravelResponseDto;
 import com.deploy.Travalue.travel.service.dto.response.TravellersResponseDto;
@@ -72,5 +73,12 @@ public class TravelController {
     public ApiResponse<List<TravellersResponseDto>> getSearchedTravellers(@RequestParam String keyword) {
         final List<TravellersResponseDto> data = travelService.getSearchedTravellers(keyword);
         return ApiResponse.success(SuccessCode.READ_SEARCHED_TRAVELLERS_SUCCESS, data);
+    }
+
+    @ApiOperation("지금 핫한 Traveller 조회 API")
+    @GetMapping("post/traveller/hot")
+    public ApiResponse<List<HotTravellersResponseDto>> getHotTravellers() {
+        final List<HotTravellersResponseDto> data = travelService.getHotTravellers();
+        return ApiResponse.success(SuccessCode.READ_HOT_TRAVELLERS_SUCCESS, data);
     }
 }

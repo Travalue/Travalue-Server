@@ -37,6 +37,8 @@ public enum SuccessCode {
     DELETE_TRAVEL_SUCCESS(HttpStatus.OK, "트레블 삭제 성공"),
 
     READ_SEARCHED_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 검색 성공"),
+
+    READ_HOT_TRAVELLERS_SUCCESS(HttpStatus.OK, "지금 핫한 트레블러 조회 성공"),
     ;
 
     private final HttpStatus httpStatus;
