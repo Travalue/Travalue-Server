@@ -148,4 +148,20 @@ public class TravelService {
 
         return searchedTravellerList;
     }
+
+    public List<HotTravellersResponseDto> getHotTravellers() {
+        List<Travel> travelList = travelRepository.findTop3ByIsPublicTrueAndIsDeletedFalseAndSectionOrderByCreatedAtDesc("traveller");
+        List<HotTravellersResponseDto> hotTravellerList = travelList.stream().map(travel -> HotTravellersResponseDto.of(
+                travel.getUser().getProfileImage(),
+                travel.getUser().getNickname(),
+                travel.getUser().getDescription(),
+                travel.getId(),
+                travel.getThumbnail(),
+                travel.getSubject(),
+                travel.getTitle(),
+                travel.getSubTitle()
+        )).collect(Collectors.toList());
+
+        return hotTravellerList;
+    }
 }
