@@ -5,8 +5,6 @@ import lombok.*;
 import java.util.List;
 
 @Getter
-@Setter
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TravelResponseDto {
     private String title;
@@ -25,17 +23,20 @@ public class TravelResponseDto {
 
     private TravelWriterDto writer;
 
-    public static TravelResponseDto of (String title, String subTitle, String subject, String thumbnail, String date, List<TravelScheduleDto> schedules, List<TravelContentsDto> contents, TravelWriterDto writer) {
-        TravelResponseDto response = new TravelResponseDto(
-                title,
-                subTitle,
-                subject,
-                thumbnail,
-                date,
-                schedules,
-                contents,
-                writer
-        );
-        return response;
+    private TravelStatisticsDto statistics;
+
+
+
+    @Builder
+    public TravelResponseDto(String title, String subTitle, String subject, String thumbnail, String date, List<TravelScheduleDto> scheudles, List<TravelContentsDto> contents, TravelWriterDto writer, TravelStatisticsDto statistics) {
+        this.title = title;
+        this.subTitle = subTitle;
+        this.subject = subject;
+        this.thumbnail = thumbnail;
+        this.date = date;
+        this.schedules = scheudles;
+        this.contents = contents;
+        this.writer = writer;
+        this.statistics = statistics;
     }
 }
