@@ -6,4 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikeTravelRepository extends JpaRepository<LikeTravel, Long> {
     int countLikeTravelByUser(User user);
+
+    int countLikeTravelByTravelId(Long travelId);
+
+    boolean existsByTravelIdAndUserId(Long travelId, Long userId);
 }

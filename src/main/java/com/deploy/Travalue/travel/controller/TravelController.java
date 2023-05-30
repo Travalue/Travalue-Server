@@ -1,6 +1,8 @@
 package com.deploy.Travalue.travel.controller;
 
 import com.deploy.Travalue.common.dto.ApiResponse;
+import com.deploy.Travalue.config.interceptor.Auth;
+import com.deploy.Travalue.config.resolver.UserId;
 import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.travel.service.TravelService;
 import com.deploy.Travalue.travel.service.dto.response.HotTravellersResponseDto;
@@ -35,10 +37,11 @@ public class TravelController {
         return ApiResponse.success(SuccessCode.READ_TRAVELLERS_SUCCESS, travellers);
     }
 
+    @Auth
     @ApiOperation("Traveller 상세 조회 API")
     @GetMapping("/post/{id}")
-    public ApiResponse<TravelResponseDto> getTravellerById(@PathVariable("id") Long travelId) {
-        final TravelResponseDto data = travelService.getTravellerById(travelId);
+    public ApiResponse<TravelResponseDto> getTravellerById(@PathVariable("id") Long travelId, @UserId Long userId) {
+        final TravelResponseDto data = travelService.getTravellerById(travelId, userId);
         return ApiResponse.success(SuccessCode.READ_TRAVEL_SUCCESS, data);
     }
 

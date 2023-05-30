@@ -2,14 +2,11 @@ package com.deploy.Travalue.travel.service;
 
 import com.deploy.Travalue.exception.model.NotFoundException;
 import com.deploy.Travalue.travel.domain.*;
-import com.deploy.Travalue.travel.infrastructure.CategoryRepository;
-import com.deploy.Travalue.travel.infrastructure.TravelPinRepository;
-import com.deploy.Travalue.travel.infrastructure.TravelRepository;
+import com.deploy.Travalue.travel.infrastructure.*;
 import com.deploy.Travalue.travel.service.dto.response.*;
 import com.deploy.Travalue.user.controller.dto.SharedTravelDetailDto;
 import com.deploy.Travalue.user.domain.User;
 import com.deploy.Travalue.user.infrastructure.UserRepository;
-import com.deploy.Travalue.travel.infrastructure.TravelContentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,7 @@ public class TravelService {
     private final CategoryRepository categoryRepository;
     private final TravelPinRepository travelPinRepository;
     private final TravelContentRepository travelContentRepository;
+    private final LikeTravelRepository likeTravelRepository;
 
     @Transactional
     public List<TrailersResponseDto> getTrailers() {
@@ -53,14 +51,23 @@ public class TravelService {
                 )).collect(Collectors.toList());
     }
 
-    public TravelResponseDto getTravellerById(Long travelId) {
+    public TravelResponseDto getTravellerById(Long travelId, Long userId) {
         final Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
+        if (travel.isDeleted()) {
+            throw new NotFoundException("삭제된 게시물입니다.");
+        }
+        if (!travel.isPublic()) {
+            throw new NotFoundException("비공개 게시물입니다.");
+        }
+        int viewCount = travel.getViewCount();
+        travel.setViewCount(++viewCount);
+        travelRepository.save(travel);
+
         final User user = travel.getUser();
         final List<TravelPin> travelPins = travelPinRepository.findTravelPinByTravelIdOrderByOrderAsc(travelId);
         final List<TravelContent> travelContents = travelContentRepository.findTravelContentByTravelId(travelId);
 
         final List<TravelInformation> travelInformation = new ArrayList<>();
-
         for (TravelPin pin : travelPins) {
             travelInformation.add(pin.getTravelInformation());
         }
@@ -79,25 +86,30 @@ public class TravelService {
 
         String date = travel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        TravelWriterDto writer = new TravelWriterDto();
-        writer.setUserId(user.getId());
-        writer.setNickname(user.getNickname());
-        writer.setDescription(user.getDescription());
-        writer.setProfileImageURL(user.getProfileImage());
+        TravelWriterDto writer = TravelWriterDto.builder()
+                .userId(user.getId())
+                .nickname(user.getNickname())
+                .description(user.getDescription())
+                .profileImageURL(user.getProfileImage())
+                .build();
 
-        TravelResponseDto data = new TravelResponseDto();
-        data.setTitle(travel.getTitle());
-        data.setSubTitle(travel.getSubTitle());
-        data.setSubject(travel.getSubject());
-        data.setThumbnail(travel.getThumbnail());
-        data.setDate(date);
-        data.setSchedules(schedules);
-        data.setContents(contents);
-        data.setWriter(writer);
+        TravelStatisticsDto statistics = TravelStatisticsDto.builder()
+                .isLiked(likeTravelRepository.existsByTravelIdAndUserId(travelId, userId))
+                .likeCount(likeTravelRepository.countLikeTravelByTravelId(travelId))
+                .viewCount(travel.getViewCount())
+                .build();
 
-        // viewCount++
-        travel.increaseViewCount();
-        travelRepository.save(travel);
+        TravelResponseDto data = TravelResponseDto.builder()
+                .title(travel.getTitle())
+                .subTitle(travel.getSubTitle())
+                .subject(travel.getSubject())
+                .thumbnail(travel.getThumbnail())
+                .date(date)
+                .scheudles(schedules)
+                .contents(contents)
+                .writer(writer)
+                .statistics(statistics)
+                .build();
 
         return data;
     }
