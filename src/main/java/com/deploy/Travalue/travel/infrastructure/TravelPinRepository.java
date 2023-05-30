@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TravelPinRepository extends JpaRepository<TravelPin, Long> {
     List<TravelPin> findTravelPinByTravelIdOrderByPinIndexAsc(Long travelId);
+
+    void deleteByTravelId(Long travelId);
 }

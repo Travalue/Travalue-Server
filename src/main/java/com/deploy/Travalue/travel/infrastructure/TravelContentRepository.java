@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TravelContentRepository extends JpaRepository<TravelContent, Long> {
     List<TravelContent> findTravelContentByTravelId(Long travelId);
+    void deleteByTravelId(Long travelId);
 }
