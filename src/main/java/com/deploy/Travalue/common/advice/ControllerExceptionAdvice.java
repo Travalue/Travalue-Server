@@ -3,6 +3,7 @@ package com.deploy.Travalue.common.advice;
 import com.deploy.Travalue.common.dto.ApiResponse;
 import com.deploy.Travalue.exception.ErrorCode;
 import com.deploy.Travalue.exception.model.TravalueException;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -25,6 +26,12 @@ public class ControllerExceptionAdvice {
     protected ApiResponse handleBadRequest(final BindException e) {
         FieldError fieldError = Objects.requireNonNull(e.getFieldError());
         return ApiResponse.error(ErrorCode.VALIDATION_EXCEPTION, String.format("%s. (%s)", fieldError.getDefaultMessage(), fieldError.getField()));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(FileSizeLimitExceededException.class)
+    protected ApiResponse handleFileSizeLimitExceededException(final FileSizeLimitExceededException e) {
+        return ApiResponse.error(ErrorCode.FILE_LIMIT_OVER_EXCEPTION);
     }
 
     /**

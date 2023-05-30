@@ -1,12 +1,15 @@
 package com.deploy.Travalue.travel.domain;
 
 import com.deploy.Travalue.common.domain.AuditingTimeEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TravelPin extends AuditingTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +24,15 @@ public class TravelPin extends AuditingTimeEntity {
     private TravelInformation travelInformation;
 
     @Column(nullable = false)
-    private Integer order;
+    private Integer pinIndex;
+
+    private TravelPin(Travel travel, TravelInformation travelInformation, Integer pinIndex) {
+        this.travel = travel;
+        this.travelInformation = travelInformation;
+        this.pinIndex = pinIndex;
+    }
+
+    public static TravelPin newInstance(Travel travel, TravelInformation travelInformation, Integer pinIndex) {
+        return new TravelPin(travel, travelInformation, pinIndex);
+    }
 }

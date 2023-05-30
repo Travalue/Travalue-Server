@@ -1,6 +1,7 @@
 package com.deploy.Travalue.travel.service;
 
 import com.deploy.Travalue.exception.model.NotFoundException;
+import com.deploy.Travalue.travel.controller.dto.request.TravellerRequestDto;
 import com.deploy.Travalue.travel.domain.*;
 import com.deploy.Travalue.travel.infrastructure.*;
 import com.deploy.Travalue.travel.service.dto.response.*;
@@ -27,7 +28,67 @@ public class TravelService {
     private final CategoryRepository categoryRepository;
     private final TravelPinRepository travelPinRepository;
     private final TravelContentRepository travelContentRepository;
+    private final TravelInformationRepository travelInformationRepository;
     private final LikeTravelRepository likeTravelRepository;
+
+    @Transactional
+    public void create(Long userId, String thumbnailImageUrl, List<String> travellerContentImageUrlList, TravellerRequestDto request) {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        final Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 카테고리입니다."));
+
+        for (TravelRoutineInfoVO travelInfo : request.getTravelRoutineInfoList()) {
+            if (travelInformationRepository.existsByAddress(travelInfo.getAddress())) {
+                continue;
+            } else {
+                travelInformationRepository.save(TravelInformation.newInstance(
+                        travelInfo.getPlaceName(),
+                        travelInfo.getAddress(),
+                        travelInfo.getLatitude(),
+                        travelInfo.getLongitude()
+                ));
+            }
+        }
+
+        final Travel newTravel = Travel.newInstance(
+                category,
+                user,
+                thumbnailImageUrl,
+                request.getSubject(),
+                request.getTitle(),
+                request.getSubTitle(),
+                request.getRegion(),
+                "traveller",
+                request.getIsPublic()
+        );
+
+        travelRepository.save(newTravel);
+
+        for (int i = 0; i < request.getTravelRoutineInfoList().size(); i++) {
+            final TravelInformation travelInformation = travelInformationRepository.findByAddress(request.getTravelRoutineInfoList().get(i).getAddress())
+                    .orElseThrow(() -> new NotFoundException("존재하지 않는 여행지 정보입니다."));
+
+            travelPinRepository.save(TravelPin.newInstance(
+                    newTravel,
+                    travelInformation,
+                    i
+            ));
+        }
+
+        for (int i = 0; i < request.getTravelContentInfoList().size(); i++) {
+
+            TravelContentInfoVO travelContent = request.getTravelContentInfoList().get(i);
+
+            travelContentRepository.save(TravelContent.newInstance(
+                    newTravel,
+                    travelContent.getContent(),
+                    travellerContentImageUrlList.get(i),
+                    i
+            ));
+        }
+    }
 
     @Transactional
     public List<TrailersResponseDto> getTrailers() {
@@ -56,7 +117,7 @@ public class TravelService {
         if (travel.isDeleted()) {
             throw new NotFoundException("삭제된 게시물입니다.");
         }
-        if (!travel.isPublic()) {
+        if (!travel.getIsPublic()) {
             throw new NotFoundException("비공개 게시물입니다.");
         }
         int viewCount = travel.getViewCount();
@@ -64,7 +125,7 @@ public class TravelService {
         travelRepository.save(travel);
 
         final User user = travel.getUser();
-        final List<TravelPin> travelPins = travelPinRepository.findTravelPinByTravelIdOrderByOrderAsc(travelId);
+        final List<TravelPin> travelPins = travelPinRepository.findTravelPinByTravelIdOrderByPinIndexAsc(travelId);
         final List<TravelContent> travelContents = travelContentRepository.findTravelContentByTravelId(travelId);
 
         final List<TravelInformation> travelInformation = new ArrayList<>();
