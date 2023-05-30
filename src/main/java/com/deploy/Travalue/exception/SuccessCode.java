@@ -15,8 +15,11 @@ public enum SuccessCode {
     // user
     NICKNAME_SUCCESS(HttpStatus.OK, "닉네임 업데이트가 완료되었습니다."),
     CHECK_NICKNAME_SUCCESS(HttpStatus.OK, "닉네임 중복 검사가 완료되었습니다."),
+    UPDATE_PROFILE_SUCCESS(HttpStatus.OK, "프로필 업데이트가 완료되었습니다."),
     CREATE_MY_TRIP_SUCCESS(HttpStatus.CREATED, "나의 여행지가 생성되었습니다."),
     GET_MY_TRIP_LIST_SUCCESS(HttpStatus.OK, "나의 여행지 리스트 조회성공"),
+    GET_MY_PAGE_SUCCESS(HttpStatus.OK, "마이 페이지 조회성공"),
+    USER_BLOCK_SUCCESS(HttpStatus.OK, "유저 차단 / 차단 해제 성공"),
 
     // travel
     CREATE_CATEGORY_SUCCESS(HttpStatus.CREATED, "카테고리가 생성됐습니다."),
@@ -27,7 +30,16 @@ public enum SuccessCode {
     READ_TRAILERS_SUCCESS(HttpStatus.OK, "트레일러 전체 조회 성공"),
     READ_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 전체 조회 성공"),
 
+    READ_SHARED_TRAVELLERS_SUCCESS(HttpStatus.OK, "공유 중인 트레블러 전체 조회 성공"),
+    READ_SHARED_TRAVELLERS_BY_CATEGORY_SUCCESS(HttpStatus.OK, "공유 중인 트레블러 카테고리별 조회 성공"),
+
     READ_TRAVEL_SUCCESS(HttpStatus.OK, "트레블러/트레일러 상세 조회 성공"),
+
+    DELETE_TRAVEL_SUCCESS(HttpStatus.OK, "트레블 삭제 성공"),
+
+    READ_SEARCHED_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 검색 성공"),
+
+    READ_HOT_TRAVELLERS_SUCCESS(HttpStatus.OK, "지금 핫한 트레블러 조회 성공"),
     ;
 
     private final HttpStatus httpStatus;

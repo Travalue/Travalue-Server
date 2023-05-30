@@ -1,16 +1,21 @@
 package com.deploy.Travalue.user.domain;
 
+import com.deploy.Travalue.user.controller.dto.UpdateProfileRequestDto;
 import com.deploy.Travalue.user.dto.CreateUserDto;
+
 import javax.persistence.Column;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.deploy.Travalue.common.domain.AuditingTimeEntity;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import org.hibernate.annotations.ColumnDefault;
 import lombok.Builder;
 import org.hibernate.annotations.DynamicInsert;
@@ -25,23 +30,15 @@ public class User extends AuditingTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private String email;
-
 
     @Column(length = 50)
     private String nickname;
 
-
     @Column()
     @ColumnDefault("false")
     private boolean isSignupCompleted; //TODO: 닉네임 null로 체크하기!!
-
-    public void updateNickname(String nickname) {
-        this.nickname = nickname;
-        this.isSignupCompleted = true;
-    }
 
     @Column(length = 2083)
     private String profileImage;
@@ -57,13 +54,12 @@ public class User extends AuditingTimeEntity {
     @Embedded
     private SocialInformation socialInformation;
 
-
     @Builder
     public User(Long id, String description, int travelCount, CreateUserDto createUserDto) {
         SocialInformation socialInformation = SocialInformation.builder()
-            .socialId(createUserDto.getSocialId())
-            .socialType(createUserDto.getSocialType())
-            .build();
+                .socialId(createUserDto.getSocialId())
+                .socialType(createUserDto.getSocialType())
+                .build();
         this.id = id;
         this.email = createUserDto.getEmail();
         this.nickname = createUserDto.getNickname();
@@ -71,5 +67,15 @@ public class User extends AuditingTimeEntity {
         this.description = description;
         this.travelCount = travelCount;
         this.socialInformation = socialInformation;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+        this.isSignupCompleted = true;
+    }
+
+    public void updateProfile(UpdateProfileRequestDto updateProfileRequestDto) {
+        this.nickname = updateProfileRequestDto.getNickname();
+        this.description = updateProfileRequestDto.getDescription();
     }
 }
