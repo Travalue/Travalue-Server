@@ -49,6 +49,22 @@ public class TravelController {
         return ApiResponse.success(SuccessCode.CREATE_CATEGORY_SUCCESS);
     }
 
+    @Auth
+    @ApiOperation("Travveller 수정 API")
+    @PutMapping("traveller/{travellerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse update(@UserId Long userId, @PathVariable Long travellerId, @ModelAttribute @Valid final TravellerRequestDto request) {
+        final String thumbnailImageUrl = s3Service.uploadImage(request.getThumbnail(), "traveller");
+        final List<MultipartFile> travellerContentImageList = new ArrayList<>();
+        for (TravelContentInfoVO travelContent : request.getTravelContentInfoList()) {
+            travellerContentImageList.add(travelContent.getImage());
+        }
+        final List<String> travellerContentImageUrlList = s3Service.uploadImages(travellerContentImageList, "traveller");
+
+        travelService.update(userId, travellerId, thumbnailImageUrl, travellerContentImageUrlList, request);
+        return ApiResponse.success(SuccessCode.UPDATE_TRAVELLER_SUCCESS);
+    }
+
     @ApiOperation("Trailer 전체 조회 API")
     @GetMapping("trailer")
     public ApiResponse<List<TrailersResponseDto>> getTrailers() {

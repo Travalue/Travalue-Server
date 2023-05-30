@@ -71,6 +71,17 @@ public class Travel extends AuditingTimeEntity {
         return new Travel(category, user, thumbnail, subject, title, subTitle, region, section, isPublic);
     }
 
+    public void update(Category category, String thumbnail, String subject, String title, String subTitle, String region, String section, Boolean isPublic) {
+        this.category = category;
+        this.thumbnail = thumbnail;
+        this.subject = subject;
+        this.title = title;
+        this.subTitle = subTitle;
+        this.region = region;
+        this.section = section;
+        this.isPublic = isPublic;
+    }
+
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean isDeleted;
