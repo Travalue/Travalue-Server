@@ -53,7 +53,23 @@ public class Travel extends AuditingTimeEntity {
 
     @Column(nullable = false)
     @ColumnDefault("true")
-    private boolean isPublic;
+    private Boolean isPublic;
+
+    private Travel(Category category, User user, String thumbnail, String subject, String title, String subTitle, String region, String section, Boolean isPublic) {
+        this.category = category;
+        this.user = user;
+        this.thumbnail = thumbnail;
+        this.subject = subject;
+        this.title = title;
+        this.subTitle = subTitle;
+        this.region = region;
+        this.section = section;
+        this.isPublic = isPublic;
+    }
+
+    public static Travel newInstance(Category category, User user, String thumbnail, String subject, String title, String subTitle, String region, String section, Boolean isPublic) {
+        return new Travel(category, user, thumbnail, subject, title, subTitle, region, section, isPublic);
+    }
 
     public void increaseViewCount() {
         int currentViewCount = getViewCount();
