@@ -92,7 +92,7 @@ public class TravelService {
 
     @Transactional
     public List<TrailersResponseDto> getTrailers() {
-        final List<Travel> travel = travelRepository.findTravelBySection("trailer");
+        final List<Travel> travel = travelRepository.findTravelByIsPublicTrueAndIsDeletedFalseAndSection("trailer");
         return travel.stream()
                 .map(trailer -> TrailersResponseDto.of(
                         trailer.getId(),
@@ -104,7 +104,7 @@ public class TravelService {
     }
 
     public List<TravellersResponseDto> getTravellers() {
-        final List<Travel> travel = travelRepository.findTravelBySection("traveller");
+        final List<Travel> travel = travelRepository.findTravelByIsPublicTrueAndIsDeletedFalseAndSection("traveller");
         return travel.stream()
                 .map(traveller -> TravellersResponseDto.of(
                         traveller.getId(),
@@ -112,7 +112,7 @@ public class TravelService {
                 )).collect(Collectors.toList());
     }
 
-    public TravelResponseDto getTravellerById(Long travelId, Long userId) {
+    public TravelResponseDto getTravelById(Long travelId, Long userId) {
         final Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
         if (travel.isDeleted()) {
             throw new NotFoundException("삭제된 게시물입니다.");
@@ -126,7 +126,7 @@ public class TravelService {
 
         final User user = travel.getUser();
         final List<TravelPin> travelPins = travelPinRepository.findTravelPinByTravelIdOrderByPinIndexAsc(travelId);
-        final List<TravelContent> travelContents = travelContentRepository.findTravelContentByTravelId(travelId);
+        final List<TravelContent> travelContents = travelContentRepository.findTravelContentByTravelIdOrderByPinIndexAsc(travelId);
 
         final List<TravelInformation> travelInformation = new ArrayList<>();
         for (TravelPin pin : travelPins) {
@@ -177,6 +177,9 @@ public class TravelService {
 
     public void deleteTravelById(Long travelId) {
         Travel travel = travelRepository.findById(travelId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
+        if (travel.isDeleted()) {
+            throw new NotFoundException("이미 삭제된 게시물입니다.");
+        }
         travel.setDeleted(true);
         travelRepository.save(travel);
     }
