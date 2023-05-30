@@ -82,8 +82,8 @@ public class TravelController {
     @Auth
     @ApiOperation("Travel 상세 조회 API")
     @GetMapping("{id}")
-    public ApiResponse<TravelResponseDto> getTravellerById(@PathVariable("id") Long travelId, @UserId Long userId) {
-        final TravelResponseDto data = travelService.getTravellerById(travelId, userId);
+    public ApiResponse<TravelResponseDto> getTravelById(@PathVariable("id") Long travelId, @UserId Long userId) {
+        final TravelResponseDto data = travelService.getTravelById(travelId, userId);
         return ApiResponse.success(SuccessCode.READ_TRAVEL_SUCCESS, data);
     }
 

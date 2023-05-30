@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TravelRepository extends JpaRepository<Travel, Long>, TravelCustomRepository {
-    List<Travel> findTravelBySection(String section);
+    List<Travel> findTravelByIsPublicTrueAndIsDeletedFalseAndSection(String section);
 
     List<Travel> findTravelByUser(User user);
 
