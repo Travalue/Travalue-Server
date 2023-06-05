@@ -30,9 +30,9 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BlockUserRepository blockUserRepository;
     private final MyTripRepository myTripRepository;
     private final TravelRepository travelRepository;
+    private final BlockUserRepository blockUserRepository;
     private final LikeTravelRepository likeTravelRepository;
 
     public void updateNickname(Long userId, String nickname) {
