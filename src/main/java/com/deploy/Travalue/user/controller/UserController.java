@@ -33,6 +33,14 @@ public class UserController {
     }
 
     @Auth
+    @PatchMapping()
+    @ApiOperation("마이페이지 수정")
+    public ApiResponse<NicknameResponseDto> updateProfile(@Valid @RequestBody final UpdateProfileRequestDto updateProfileRequestDto, @UserId Long userId) {
+        userService.updateProfile(updateProfileRequestDto, userId);
+        return ApiResponse.success(SuccessCode.UPDATE_PROFILE_SUCCESS);
+    }
+
+    @Auth
     @Transactional
     @ApiOperation("닉네임 등록 / 수정")
     @PutMapping("/nickname")
@@ -49,13 +57,6 @@ public class UserController {
     public ApiResponse<NicknameResponseDto> updateNickname(@Valid @RequestParam String nickname) {
         NicknameResponseDto nicknameResponseDto = userService.checkNickname(nickname);
         return ApiResponse.success(SuccessCode.CHECK_NICKNAME_SUCCESS, nicknameResponseDto);
-    }
-
-    @Auth
-    @PatchMapping("")
-    public ApiResponse<NicknameResponseDto> updateProfile(@Valid @RequestBody final UpdateProfileRequestDto updateProfileRequestDto, @UserId Long userId) {
-        userService.updateProfile(updateProfileRequestDto, userId);
-        return ApiResponse.success(SuccessCode.UPDATE_PROFILE_SUCCESS);
     }
 
     @Auth
