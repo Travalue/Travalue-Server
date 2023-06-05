@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/user")
 @RequiredArgsConstructor
+@RequestMapping("/v1/user")
 public class UserController {
 
     private final UserService userService;
@@ -42,8 +42,8 @@ public class UserController {
 
     @Auth
     @Transactional
-    @ApiOperation("닉네임 등록 / 수정")
     @PutMapping("/nickname")
+    @ApiOperation("닉네임 등록 / 수정")
     public ApiResponse<?> updateNickname(
             @Valid @RequestBody final NicknameRequestDto nicknameRequestDto, @UserId Long userId) {
         log.info("userId :" + userId);
@@ -52,8 +52,8 @@ public class UserController {
         return ApiResponse.success(SuccessCode.NICKNAME_SUCCESS);
     }
 
-    @ApiOperation("닉네임 중복 체크")
     @GetMapping("/check")
+    @ApiOperation("닉네임 중복 체크")
     public ApiResponse<NicknameResponseDto> updateNickname(@Valid @RequestParam String nickname) {
         NicknameResponseDto nicknameResponseDto = userService.checkNickname(nickname);
         return ApiResponse.success(SuccessCode.CHECK_NICKNAME_SUCCESS, nicknameResponseDto);
@@ -61,6 +61,7 @@ public class UserController {
 
     @Auth
     @PostMapping("/block")
+    @ApiOperation("유저 차단 / 차단 해제")
     public ApiResponse<?> userBlock(@UserId Long userId,
                                     @RequestBody UserBlockRequestDto userBlockRequestDto) {
         log.info("유저 차단  userId : " + userId + " userBolckRequestDto : " + userBlockRequestDto.toString());
