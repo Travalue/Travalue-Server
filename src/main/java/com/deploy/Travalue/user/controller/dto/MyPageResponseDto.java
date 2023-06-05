@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MyPageResponseDto {
 
+    Boolean isMe;
     String nickname;
     String profileImage;
     String description;
@@ -24,7 +25,8 @@ public class MyPageResponseDto {
     int travelLikeCount;
 
     @Builder
-    public MyPageResponseDto(User user, List<MyTripResponseDto> travelList, int sharedTravelCount, List<SharedTravelDto> sharedTravel, int travelLikeCount) {
+    public MyPageResponseDto(Boolean isMe, User user, List<MyTripResponseDto> travelList, int sharedTravelCount, List<SharedTravelDto> sharedTravel, int travelLikeCount) {
+        this.isMe = isMe;
         this.nickname = user.getNickname();
         this.profileImage = user.getProfileImage();
         this.description = user.getDescription();

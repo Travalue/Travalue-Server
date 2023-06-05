@@ -25,10 +25,10 @@ public class UserController {
 
     @Auth
     @ApiOperation("마이페이지 조회")
-    @GetMapping("")
-    public ApiResponse<?> getMyPage(@UserId Long userId) {
-        log.info("userId :" + userId);
-        MyPageResponseDto myPageResponseDto = userService.getMyPage(userId);
+    @GetMapping("/{pageOwnerUserId}")
+    public ApiResponse<?> getMyPage(@UserId Long userId, Long pageOwnerUserId) {
+        log.info("userId :" + userId + " pageOwnerUserId : " + pageOwnerUserId);
+        MyPageResponseDto myPageResponseDto = userService.getMyPage(userId, pageOwnerUserId);
         return ApiResponse.success(SuccessCode.GET_MY_PAGE_SUCCESS, myPageResponseDto);
     }
 
