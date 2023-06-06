@@ -53,14 +53,6 @@ public class UserService {
 
     @Transactional
     User registerUser(CreateUserDto createUserDto) {
-        // 닉네임 중복 체크
-        Optional<User> duplicatedNickname = userRepository.findByNickname(createUserDto.getNickname());
-
-        if (duplicatedNickname.isPresent()) {
-            // TODO: 카카오에서 받아온 닉네임을 사용하는 데 보통 이름으로 설정되어 있어 중복 될 가능성 높음 (따로 처리해줘야됨)
-            throw new IllegalArgumentException("중복 닉네임 입니다");
-        }
-
         User user = User.builder()
                 .createUserDto(createUserDto)
                 .build();
