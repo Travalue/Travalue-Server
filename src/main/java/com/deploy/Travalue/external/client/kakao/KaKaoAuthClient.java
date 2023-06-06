@@ -10,7 +10,6 @@ public interface KaKaoAuthClient {
 
     @PostMapping("/oauth/token")
     KakaoTokenResponse getAccessToken(@RequestParam("client_id") String restApiKey,
-        @RequestParam("redirect_uri") String redirectUrl,
         @RequestParam("code") String code,
         @RequestParam("grant_type") String grantType);
 }
