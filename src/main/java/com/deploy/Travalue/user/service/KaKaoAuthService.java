@@ -26,15 +26,13 @@ public class KaKaoAuthService implements AuthService{
     private final KaKaoApiClient kaKaoApiClient;
     private final KaKaoAuthClient kakaoAuthCaller;
 
-    @Value("${kakao.redirect-uri}")
-    private String redirectUrl;
     @Value("${kakao.client-id}")
     private String clientId;
 
     @Override
     public Long login(LoginRequest loginRequest) {
         // 1. 인가 코드를 가지고 Access_Token 받아오기
-        KakaoTokenResponse kakaoTokenResponse = kakaoAuthCaller.getAccessToken(clientId, redirectUrl, loginRequest.getCode(), "authorization_code");
+        KakaoTokenResponse kakaoTokenResponse = kakaoAuthCaller.getAccessToken(clientId, loginRequest.getCode(), "authorization_code");
         log.info("kaKaoProfileResponse : "+kakaoTokenResponse);
 
         // 2. Access_Token을 가지고 사용자 정보 가져오기
