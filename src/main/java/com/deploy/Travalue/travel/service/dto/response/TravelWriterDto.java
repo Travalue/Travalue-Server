@@ -1,10 +1,11 @@
 package com.deploy.Travalue.travel.service.dto.response;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelWriterDto {
     private Long userId;
 
@@ -13,4 +14,12 @@ public class TravelWriterDto {
     private String description;
 
     private String profileImageURL;
+
+    @Builder
+    public TravelWriterDto(Long userId, String nickname, String description, String profileImageURL) {
+        this.userId = userId;
+        this.nickname = nickname;
+        this.description = description;
+        this.profileImageURL = profileImageURL;
+    }
 }

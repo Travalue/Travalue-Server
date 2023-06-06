@@ -26,6 +26,8 @@ public enum SuccessCode {
     UPDATE_CATEGORY_SUCCESS(HttpStatus.OK, "카테고리 업데이트에 성공했습니다."),
     DELETE_CATEGORY_SUCCESS(HttpStatus.OK, "카테고리가 삭제됐습니다."),
 
+    CREATE_TRAVELLER_SUCCESS(HttpStatus.CREATED, "트레블러 생성 성공"),
+    UPDATE_TRAVELLER_SUCCESS(HttpStatus.OK, "트레블러 업데이트 성공"),
     READ_TRAILERS_SUCCESS(HttpStatus.OK, "트레일러 전체 조회 성공"),
     READ_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 전체 조회 성공"),
 
@@ -35,6 +37,10 @@ public enum SuccessCode {
     READ_TRAVEL_SUCCESS(HttpStatus.OK, "트레블러/트레일러 상세 조회 성공"),
 
     DELETE_TRAVEL_SUCCESS(HttpStatus.OK, "트레블 삭제 성공"),
+
+    READ_SEARCHED_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 검색 성공"),
+
+    READ_HOT_TRAVELLERS_SUCCESS(HttpStatus.OK, "지금 핫한 트레블러 조회 성공"),
     ;
 
     private final HttpStatus httpStatus;
