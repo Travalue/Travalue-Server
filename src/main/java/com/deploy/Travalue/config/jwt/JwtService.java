@@ -3,22 +3,29 @@ package com.deploy.Travalue.config.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
+    private static String SECRET;
 
-    private static String SECRET = "TripStyleCleanCodingisveryfunny";
+    @Value("${jwt.secret}")
+    public void setKey(String value) {
+        SECRET = value;
+    }
 
     @PostConstruct
     protected void init() {
         SECRET = Base64.getEncoder()
-            .encodeToString(SECRET.getBytes(StandardCharsets.UTF_8));
+                .encodeToString(SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
     public String issuedToken(String subject, String role, long periodSecond) {
@@ -27,11 +34,11 @@ public class JwtService {
 
         final Date now = new Date();
         return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(new Date(now.getTime() + periodSecond * 1000))
-            .signWith(getSigningKey())
-            .compact();
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + periodSecond * 1000))
+                .signWith(getSigningKey())
+                .compact();
     }
 
     public boolean verifyToken(String token) {
@@ -56,9 +63,9 @@ public class JwtService {
 
     private Claims getBody(final String token) {
         return Jwts.parserBuilder()
-            .setSigningKey(getSigningKey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
