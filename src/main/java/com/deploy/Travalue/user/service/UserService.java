@@ -30,9 +30,9 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BlockUserRepository blockUserRepository;
     private final MyTripRepository myTripRepository;
     private final TravelRepository travelRepository;
+    private final BlockUserRepository blockUserRepository;
     private final LikeTravelRepository likeTravelRepository;
 
     public void updateNickname(Long userId, String nickname) {
@@ -69,26 +69,39 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public MyPageResponseDto getMyPage(Long userId) {
+    public MyPageResponseDto getMyPage(Long userId, Long pageOwnerUserId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        User pageOwner = userRepository.findById(pageOwnerUserId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        final List<MyTrip> myTripList = myTripRepository.findByUserId(userId);
+        // 마이페이지를 조회하는 사람이 본인 여부 체크
+        Boolean isMe = false;
+        if (user == pageOwner)
+            isMe = true;
 
+        // 나의 여행지 리스트
+        final List<MyTrip> myTripList = myTripRepository.findByUserId(pageOwnerUserId);
+        // List<MyTrip> -> List<MyTripResponseDto>
         List<MyTripResponseDto> travelList = myTripList.stream()
                 .map(trip -> MyTripResponseDto.of(trip.getEmoji(), trip.getTravelTitle()))
                 .collect(Collectors.toList());
 
-        List<SharedTravelDto> sharedTravelDtoList = travelRepository.findSharedTravelList(user);
+        // 공유중인 여행지 리스트
+        List<SharedTravelDto> sharedTravelDtoList = travelRepository.findSharedTravelList(pageOwner);
+
+        // 공유중인 여행지 개수
         int sharedTravelCount = 0;
         for (SharedTravelDto sharedTravelDto : sharedTravelDtoList) {
             sharedTravelCount += sharedTravelDto.getCount();
         }
 
-        int travelLikeCount = likeTravelRepository.countLikeTravelByUser(user);
+        // 트레블러/트레일러 좋아용 목록
+        int travelLikeCount = likeTravelRepository.countLikeTravelByUser(pageOwner);
 
         MyPageResponseDto myPageResponseDto = MyPageResponseDto.builder()
-                .user(user)
+                .isMe(isMe)
+                .user(pageOwner)
                 .travelList(travelList)
                 .sharedTravelCount(sharedTravelCount)
                 .sharedTravel(sharedTravelDtoList)
