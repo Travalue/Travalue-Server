@@ -126,4 +126,20 @@ public class TravelController {
         final List<HotTravellersResponseDto> data = travelService.getHotTravellers();
         return ApiResponse.success(SuccessCode.READ_HOT_TRAVELLERS_SUCCESS, data);
     }
+
+    @Auth
+    @ApiOperation("게시물 좋아요 API")
+    @PostMapping("/{postId}/like")
+    public ApiResponse travelLike(@UserId Long userId, @PathVariable Long postId) {
+        travelService.travelLike(userId, postId);
+        return ApiResponse.success(SuccessCode.LIKE_TRAVEL_SUCCESS);
+    }
+
+    @Auth
+    @ApiOperation("게시물 좋아요 취소 API")
+    @DeleteMapping("{postId}/unlike")
+    public ApiResponse travelUnlike(@UserId Long userId, @PathVariable Long postId) {
+        travelService.travelUnlike(userId, postId);
+        return ApiResponse.success(SuccessCode.UNLIKE_TRAVEL_SUCCESS);
+    }
 }

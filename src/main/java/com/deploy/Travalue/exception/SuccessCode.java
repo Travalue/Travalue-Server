@@ -41,6 +41,9 @@ public enum SuccessCode {
     READ_SEARCHED_TRAVELLERS_SUCCESS(HttpStatus.OK, "트레블러 검색 성공"),
 
     READ_HOT_TRAVELLERS_SUCCESS(HttpStatus.OK, "지금 핫한 트레블러 조회 성공"),
+
+    LIKE_TRAVEL_SUCCESS(HttpStatus.CREATED, "게시물 좋아요 성공"),
+    UNLIKE_TRAVEL_SUCCESS(HttpStatus.OK, "게시물 좋아요 취소 성공"),
     ;
 
     private final HttpStatus httpStatus;

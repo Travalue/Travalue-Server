@@ -1,4 +1,4 @@
-package com.deploy.Travalue.travel.domain.likeTavel;
+package com.deploy.Travalue.travel.domain;
 
 import com.deploy.Travalue.common.domain.AuditingTimeEntity;
 import com.deploy.Travalue.travel.domain.Travel;
@@ -20,11 +20,20 @@ public class LikeTravel extends AuditingTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "travel_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "travel_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Travel travel;
+
+    private LikeTravel(final User user, final Travel travel) {
+        this.user = user;
+        this.travel = travel;
+    }
+
+    public static LikeTravel newInstance(final User user, final Travel travel) {
+        return new LikeTravel(user, travel);
+    }
 }

@@ -316,4 +316,29 @@ public class TravelService {
 
         return hotTravellerList;
     }
+
+    @Transactional
+    public void travelLike(Long userId, Long postId) {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        final Travel travel = travelRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+
+        likeTravelRepository.save(LikeTravel.newInstance(user, travel));
+    }
+
+    @Transactional
+    public void travelUnlike(Long userId, Long postId) {
+       final User user = userRepository.findById(userId)
+               .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        final Travel travel = travelRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+
+        LikeTravel likeTravel = likeTravelRepository.findByUserIdAndTravelId(user.getId(), travel.getId())
+                .orElseThrow(() -> new NotFoundException("좋아요를 누른 적이 없는 게시글입니다."));
+
+        likeTravelRepository.deleteById(likeTravel.getId());
+    }
 }
