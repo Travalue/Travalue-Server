@@ -13,11 +13,11 @@ public class TravelScheduleDto {
 
     private String address;
 
-    private Long latitude;
+    private Double latitude;
 
-    private Long longitude;
+    private Double longitude;
 
-    public static TravelScheduleDto of (String name, String address, Long latitude, Long longitude) {
+    public static TravelScheduleDto of (String name, String address, Double latitude, Double longitude) {
         TravelScheduleDto response = new TravelScheduleDto(
                 name,
                 address,

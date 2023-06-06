@@ -44,7 +44,6 @@ public class User extends AuditingTimeEntity {
     private String profileImage;
 
     @Column()
-    @ColumnDefault("TEXT")
     private String description;
 
     @Column()
