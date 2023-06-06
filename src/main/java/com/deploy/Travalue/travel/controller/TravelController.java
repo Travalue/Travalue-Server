@@ -46,7 +46,7 @@ public class TravelController {
         final List<String> travellerContentImageUrlList = s3Service.uploadImages(travellerContentImageList, "traveller");
 
         travelService.create(userId, thumbnailImagePath, travellerContentImageUrlList, request);
-        return ApiResponse.success(SuccessCode.CREATE_CATEGORY_SUCCESS);
+        return ApiResponse.success(SuccessCode.CREATE_TRAVELLER_SUCCESS);
     }
 
     @Auth
