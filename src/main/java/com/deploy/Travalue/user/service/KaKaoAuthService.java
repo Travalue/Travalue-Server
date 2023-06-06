@@ -9,6 +9,7 @@ import com.deploy.Travalue.user.domain.User;
 import com.deploy.Travalue.user.domain.UserSocialType;
 import com.deploy.Travalue.user.dto.CreateUserDto;
 import com.deploy.Travalue.user.dto.request.LoginRequest;
+import com.deploy.Travalue.user.dto.response.LoginServiceResponseDto;
 import com.deploy.Travalue.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,9 @@ public class KaKaoAuthService implements AuthService{
     private String clientId;
 
     @Override
-    public Long login(LoginRequest loginRequest) {
+    public LoginServiceResponseDto login(LoginRequest loginRequest) {
+        Boolean isSignup = false;
+
         // 1. 인가 코드를 가지고 Access_Token 받아오기
         KakaoTokenResponse kakaoTokenResponse = kakaoAuthCaller.getAccessToken(clientId, loginRequest.getCode(), "authorization_code");
         log.info("kaKaoProfileResponse : "+kakaoTokenResponse);
@@ -57,6 +60,14 @@ public class KaKaoAuthService implements AuthService{
         }else{
             log.info("이미 가입된 회원...");
         }
-        return user.getId();
+
+        if (user.getNickname() != null) {
+            isSignup = true;
+        }
+
+        return new LoginServiceResponseDto(
+                user.getId(),
+                isSignup
+        );
     }
 }

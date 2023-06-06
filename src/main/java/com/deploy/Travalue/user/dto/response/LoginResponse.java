@@ -13,10 +13,12 @@ import lombok.ToString;
 public class LoginResponse {
     private String token;
     private Long userId;
+    private Boolean isSignup;
 
     @Builder
-    public LoginResponse(String token, Long userId) {
+    public LoginResponse(String token, Long userId, Boolean isSignup) {
         this.token = token;
         this.userId = userId;
+        this.isSignup = isSignup;
     }
 }

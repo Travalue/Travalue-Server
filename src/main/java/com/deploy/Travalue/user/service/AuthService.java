@@ -1,7 +1,8 @@
 package com.deploy.Travalue.user.service;
 
 import com.deploy.Travalue.user.dto.request.LoginRequest;
+import com.deploy.Travalue.user.dto.response.LoginServiceResponseDto;
 
 public interface AuthService {
-    Long login(LoginRequest loginRequest);
+    LoginServiceResponseDto login(LoginRequest loginRequest);
 }
