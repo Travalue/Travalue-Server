@@ -5,6 +5,7 @@ import com.deploy.Travalue.config.jwt.JwtService;
 import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.user.dto.request.LoginRequest;
 import com.deploy.Travalue.user.dto.response.LoginResponse;
+import com.deploy.Travalue.user.dto.response.LoginServiceResponseDto;
 import com.deploy.Travalue.user.service.AuthService;
 import com.deploy.Travalue.user.service.AuthServiceProvider;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +27,8 @@ public class AuthController {
     @PostMapping("/login")
     public ApiResponse<LoginResponse> login(@Valid @RequestBody final LoginRequest loginRequest) {
         final AuthService authService = authServiceProvider.getAuthService(loginRequest.getSocialType());
-        final Long userId = authService.login(loginRequest);
-        final String token = jwtService.issuedToken(String.valueOf(userId), "USER", 60 * 60 * 24 * 365L); // TODO:임의로 365일 (기존 30일)
-        return ApiResponse.success(SuccessCode.LOGIN_SUCCESS, new LoginResponse(token, userId));
+        final LoginServiceResponseDto loginServiceResponseDto = authService.login(loginRequest);
+        final String token = jwtService.issuedToken(String.valueOf(loginServiceResponseDto.getUserId()), "USER", 60 * 60 * 24 * 365L); // TODO:임의로 365일 (기존 30일)
+        return ApiResponse.success(SuccessCode.LOGIN_SUCCESS, new LoginResponse(token, loginServiceResponseDto.getUserId(), loginServiceResponseDto.getIsSignup()));
     }
 }

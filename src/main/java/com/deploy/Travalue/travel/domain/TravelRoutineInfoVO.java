@@ -20,8 +20,8 @@ public class TravelRoutineInfoVO {
     private String address;
 
     @NotNull
-    private Long latitude;
+    private Double latitude;
 
     @NotNull
-    private Long longitude;
+    private Double longitude;
 }

@@ -19,10 +19,6 @@ public class CreateUserDto {
     @NotNull(message = "{user.socialType.notNull}")
     private UserSocialType socialType;
 
-    @NotBlank(message = "{user.nickname.notBlank}")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9-_]{2,15}$", message = "{user.nickname.format}")
-    private String nickname;
-
     @NotNull(message = "{user.email.notNull")
     @Email(message = "{user.email.format}")
     private String email;
@@ -32,7 +28,6 @@ public class CreateUserDto {
     @Builder
     public CreateUserDto(UserSocialType socialType, KaKaoProfileResponse kaKaoProfileResponse) {
         this.socialId = kaKaoProfileResponse.getId();
-        this.nickname = kaKaoProfileResponse.getProperties().getNickname();
         this.email = kaKaoProfileResponse.getKakaoAccount().getEmail();
         this.profileImage = kaKaoProfileResponse.getProperties().getProfileImage();
         this.socialType = socialType;

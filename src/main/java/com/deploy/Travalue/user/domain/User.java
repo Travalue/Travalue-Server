@@ -44,7 +44,6 @@ public class User extends AuditingTimeEntity {
     private String profileImage;
 
     @Column()
-    @ColumnDefault("TEXT")
     private String description;
 
     @Column()
@@ -62,7 +61,6 @@ public class User extends AuditingTimeEntity {
                 .build();
         this.id = id;
         this.email = createUserDto.getEmail();
-        this.nickname = createUserDto.getNickname();
         this.profileImage = createUserDto.getProfileImage();
         this.description = description;
         this.travelCount = travelCount;

@@ -22,19 +22,19 @@ public class TravelInformation extends AuditingTimeEntity {
     private String address;
 
     @Column(nullable = false)
-    private Long latitude;
+    private Double latitude;
 
     @Column(nullable = false)
-    private Long longitude;
+    private Double longitude;
 
-    private TravelInformation(String name, String address, Long latitude, Long longitude) {
+    private TravelInformation(String name, String address, Double latitude, Double longitude) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public static TravelInformation newInstance(String name, String address, Long latitude, Long longitude) {
+    public static TravelInformation newInstance(String name, String address, Double latitude, Double longitude) {
         return new TravelInformation(name, address, latitude, longitude);
     }
 }
