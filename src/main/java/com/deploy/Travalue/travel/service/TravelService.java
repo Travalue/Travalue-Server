@@ -264,7 +264,7 @@ public class TravelService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        List<Travel> travelList = travelRepository.findTravelByUser(user);
+        List<Travel> travelList = travelRepository.findTravelByUserAndIsDeletedFalse(user);
 
         // List<Travel> -> List<SharedTravelDetailDto>
         List<SharedTravelDetailDto> sharedTravelDetailDtoList = travelList.stream()
@@ -281,7 +281,7 @@ public class TravelService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("존재하지 카테고리 id 입니다."));
 
-        List<Travel> travelList = travelRepository.findTravelByUserAndCategory(user, category);
+        List<Travel> travelList = travelRepository.findTravelByUserAndCategoryAndIsDeletedFalse(user, category);
 
         // List<Travel> -> List<SharedTravelDetailDto>
         List<SharedTravelDetailDto> sharedTravelDetailDtoList = travelList.stream()
