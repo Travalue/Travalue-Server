@@ -12,7 +12,11 @@ public interface TravelRepository extends JpaRepository<Travel, Long>, TravelCus
 
     List<Travel> findTravelByUserAndIsDeletedFalse(User user);
 
+    List<Travel> findTravelByUserAndIsDeletedFalseAndIsPublicTrue(User user);
+
     List<Travel> findTravelByUserAndCategoryAndIsDeletedFalse(User user, Category category);
+
+    List<Travel> findTravelByUserAndCategoryAndIsDeletedFalseAndIsPublicTrue(User user, Category category);
 
     List<Travel> findTravelByIsPublicTrueAndIsDeletedFalseAndSectionAndTitleContainingOrSubTitleContaining(String section, String keyword1, String keyword2);
 
