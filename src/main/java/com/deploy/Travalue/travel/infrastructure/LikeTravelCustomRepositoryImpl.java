@@ -19,6 +19,7 @@ public class LikeTravelCustomRepositoryImpl implements LikeTravelCustomRepositor
                 .select(count(likeTravel.travel))
                 .from(likeTravel)
                 .where(likeTravel.user.eq(user))
+                .where(likeTravel.travel.isPublic.eq(true))
                 .where(likeTravel.travel.isDeleted.eq(false))
                 .fetchOne()
                 .intValue();
