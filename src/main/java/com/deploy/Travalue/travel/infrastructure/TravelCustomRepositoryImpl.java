@@ -32,6 +32,7 @@ public class TravelCustomRepositoryImpl implements TravelCustomRepository {
                 .join(travel.category, category)
                 .groupBy(category)
                 .where(travel.user.eq(user))
+                .where(travel.isDeleted.eq(false))
                 .fetch();
     }
 }
