@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TravelCustomRepository {
     List<SharedTravelDto> findSharedTravelList(User user);
+    List<SharedTravelDto> findMySharedTravelList(User user);
 }

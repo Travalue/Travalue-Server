@@ -80,7 +80,13 @@ public class UserService {
                 .collect(Collectors.toList());
 
         // 공유중인 여행지 리스트
-        List<SharedTravelDto> sharedTravelDtoList = travelRepository.findSharedTravelList(pageOwner);
+        List<SharedTravelDto> sharedTravelDtoList;
+        if(isMe){
+            // 본인인 경우 비공개 게시물 까지 조회
+            sharedTravelDtoList = travelRepository.findMySharedTravelList(pageOwner);
+        }else{
+            sharedTravelDtoList = travelRepository.findSharedTravelList(pageOwner);
+        }
 
         // 공유중인 여행지 개수
         int sharedTravelCount = 0;

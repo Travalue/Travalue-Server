@@ -21,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 @Slf4j
@@ -94,21 +96,23 @@ public class TravelController {
         return ApiResponse.success(SuccessCode.DELETE_TRAVEL_SUCCESS);
     }
 
+    @Auth
     @ApiOperation("공유 중인 Traveller 전체 조회 API")
-    @GetMapping("traveller/share/{userId}")
-    public ApiResponse<?> getTravellers(@PathVariable Long userId) {
-        log.info("공유 중인 Travellser 전체 조회 API - userId : " + userId);
-        final List<SharedTravelDetailDto> travellers = travelService.getTravellersByProfileOwnerId(userId);
+    @GetMapping("traveller/share/{pageOwnerUserId}")
+    public ApiResponse<?> getTravellers(@PathVariable Long pageOwnerUserId, @UserId Long userId) {
+        log.info("공유 중인 Travellser 전체 조회 API - pageOwnerUserId : " + pageOwnerUserId);
+        final List<SharedTravelDetailDto> travellers = travelService.getTravellersByProfileOwnerId(userId, pageOwnerUserId);
         return ApiResponse.success(SuccessCode.READ_SHARED_TRAVELLERS_SUCCESS, travellers);
     }
 
+    @Auth
     @ApiOperation("공유 중인 Traveller 카테고리별 조회 API")
-    @GetMapping("traveller/share/{userId}/{categoryId}")
-    public ApiResponse<?> getTravellers(@PathVariable Long userId, @PathVariable Long categoryId) {
+    @GetMapping("traveller/share/{pageOwnerUserId}/{categoryId}")
+    public ApiResponse<?> getTravellers(@PathVariable Long pageOwnerUserId, @PathVariable Long categoryId, @UserId Long userId) {
         // TODO: 이거 getRravellers 함수명 3곳에서 공유했는데 변경해주는게 좋겠지? 오버로딩으로 되길래 사용했는데...
-        log.info("공유 중인 Travellser 카테고리별 조회 API - userId : " + userId + " categoryId : " + categoryId);
+        log.info("공유 중인 Travellser 카테고리별 조회 API - pageOwnerUserId : " + pageOwnerUserId + " categoryId : " + categoryId + " userId : " + userId);
 
-        final List<SharedTravelDetailDto> travellers = travelService.getTravellersByCategory(userId, categoryId);
+        final List<SharedTravelDetailDto> travellers = travelService.getTravellersByCategory(userId, pageOwnerUserId, categoryId);
 
         return ApiResponse.success(SuccessCode.READ_SHARED_TRAVELLERS_BY_CATEGORY_SUCCESS, travellers);
     }

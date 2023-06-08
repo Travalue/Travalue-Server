@@ -32,6 +32,26 @@ public class TravelCustomRepositoryImpl implements TravelCustomRepository {
                 .join(travel.category, category)
                 .groupBy(category)
                 .where(travel.user.eq(user))
+                .where(travel.isPublic.eq(true))
+                .where(travel.isDeleted.eq(false))
+                .fetch();
+    }
+
+    @Override
+    public List<SharedTravelDto> findMySharedTravelList(User user) {
+        return jpaQueryFactory
+                .select(Projections.constructor(SharedTravelDto.class,
+                        travel.category.id.as("categoryId"),
+                        travel.category.title,
+                        travel.category.subject,
+                        travel.category.thumbnail,
+                        ExpressionUtils.count(travel.category)
+                ))
+                .from(travel)
+                .join(travel.category, category)
+                .groupBy(category)
+                .where(travel.user.eq(user))
+                .where(travel.isDeleted.eq(false))
                 .fetch();
     }
 }
