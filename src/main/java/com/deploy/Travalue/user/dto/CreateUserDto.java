@@ -1,11 +1,12 @@
 package com.deploy.Travalue.user.dto;
 
-import com.deploy.Travalue.external.client.kakao.response.KaKaoProfileResponse;
 import com.deploy.Travalue.user.domain.UserSocialType;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+
+import com.deploy.Travalue.user.dto.request.LoginRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class CreateUserDto {
     @NotBlank(message = "{user.socialId.notBlank}")
-    private String socialId;
+    private String uniqueId;
 
     @NotNull(message = "{user.socialType.notNull}")
     private UserSocialType socialType;
@@ -26,10 +27,10 @@ public class CreateUserDto {
     private String profileImage;
 
     @Builder
-    public CreateUserDto(UserSocialType socialType, KaKaoProfileResponse kaKaoProfileResponse) {
-        this.socialId = kaKaoProfileResponse.getId();
-        this.email = kaKaoProfileResponse.getKakaoAccount().getEmail();
-        this.profileImage = kaKaoProfileResponse.getProperties().getProfileImage();
-        this.socialType = socialType;
+    public CreateUserDto(LoginRequest loginRequest) {
+        this.uniqueId = loginRequest.getUniqueId();
+        this.email = loginRequest.getEmail();
+        this.profileImage = loginRequest.getProfileImage();
+        this.socialType = loginRequest.getSocialType();
     }
 }

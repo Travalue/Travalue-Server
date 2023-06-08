@@ -19,13 +19,13 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class KaKaoAuthService implements AuthService{
+public class KaKaoAuthService implements AuthService {
 
     private static final UserSocialType socialType = UserSocialType.KAKAO;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final KaKaoApiClient kaKaoApiClient;
-    private final KaKaoAuthClient kakaoAuthCaller;
+//    private final KaKaoApiClient kaKaoApiClient;
+//    private final KaKaoAuthClient kakaoAuthCaller;
 
     @Value("${kakao.client-id}")
     private String clientId;
@@ -34,6 +34,8 @@ public class KaKaoAuthService implements AuthService{
     public LoginServiceResponseDto login(LoginRequest loginRequest) {
         Boolean isSignup = false;
 
+        /*
+        // 클라이언트에서 1,2 작업 직접 처리
         // 1. 인가 코드를 가지고 Access_Token 받아오기
         KakaoTokenResponse kakaoTokenResponse = kakaoAuthCaller.getAccessToken(clientId, loginRequest.getCode(), "authorization_code");
         log.info("kaKaoProfileResponse : "+kakaoTokenResponse);
@@ -41,23 +43,23 @@ public class KaKaoAuthService implements AuthService{
         // 2. Access_Token을 가지고 사용자 정보 가져오기
         KaKaoProfileResponse kaKaoProfileResponse = kaKaoApiClient.getProfileInfo("Bearer "+kakaoTokenResponse.getAccess_token());
         log.info("kaKaoProfileResponse : "+kaKaoProfileResponse);
+        */
 
         SocialInformation socialInformation = SocialInformation.builder()
-            .socialId(kaKaoProfileResponse.getId())
-            .socialType(socialType)
-            .build();
+                .uniqueId(loginRequest.getUniqueId())
+                .socialType(socialType)
+                .build();
 
         User user = userRepository.findBySocialInformation(socialInformation).orElse(null);
 
-        if(user == null){
+        if (user == null) {
             // DB에 존재하지 않는 유저 -> 회원 가입 후 로그인
             log.info("가입 된 적 없는 회원...");
             CreateUserDto createUserDto = CreateUserDto.builder()
-                .kaKaoProfileResponse(kaKaoProfileResponse)
-                .socialType(loginRequest.getSocialType())
-                .build();
+                    .loginRequest(loginRequest)
+                    .build();
             user = userService.registerUser(createUserDto);
-        }else{
+        } else {
             log.info("이미 가입된 회원...");
         }
 
