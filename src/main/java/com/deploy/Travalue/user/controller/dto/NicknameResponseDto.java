@@ -1,18 +1,13 @@
 package com.deploy.Travalue.user.controller.dto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AddTripRequestDto {
-
-    @NotBlank
-    private String emoji;
-
-    @NotBlank
-    private String travelTitle;
+public class NicknameResponseDto {
+    private Boolean isDuplicate;
 }
