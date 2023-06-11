@@ -56,7 +56,7 @@ public class User extends AuditingTimeEntity {
     @Builder
     public User(Long id, String description, int travelCount, CreateUserDto createUserDto) {
         SocialInformation socialInformation = SocialInformation.builder()
-                .socialId(createUserDto.getSocialId())
+                .uniqueId(createUserDto.getUniqueId())
                 .socialType(createUserDto.getSocialType())
                 .build();
         this.id = id;
