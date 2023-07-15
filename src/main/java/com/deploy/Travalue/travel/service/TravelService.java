@@ -1,5 +1,6 @@
 package com.deploy.Travalue.travel.service;
 
+import com.deploy.Travalue.exception.model.ConflictException;
 import com.deploy.Travalue.exception.model.NotFoundException;
 import com.deploy.Travalue.exception.model.UnauthorizedException;
 import com.deploy.Travalue.external.client.aws.S3Service;
@@ -340,6 +341,10 @@ public class TravelService {
 
         final Travel travel = travelRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+
+        if (likeTravelRepository.existsByTravelIdAndUserId(user.getId(), travel.getId())) {
+            throw new ConflictException("이미 좋아요를 누른 게시물입니다.");
+        }
 
         likeTravelRepository.save(LikeTravel.newInstance(user, travel));
     }
