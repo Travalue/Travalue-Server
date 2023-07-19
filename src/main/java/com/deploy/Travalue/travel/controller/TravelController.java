@@ -6,6 +6,7 @@ import com.deploy.Travalue.config.resolver.UserId;
 import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.external.client.aws.S3Service;
 import com.deploy.Travalue.travel.controller.dto.request.TravellerRequestDto;
+import com.deploy.Travalue.travel.controller.dto.response.LikeCountResponseDto;
 import com.deploy.Travalue.travel.domain.TravelContentInfoVO;
 import com.deploy.Travalue.travel.service.TravelService;
 import com.deploy.Travalue.travel.service.dto.response.HotTravellersResponseDto;
@@ -135,16 +136,14 @@ public class TravelController {
     @Auth
     @ApiOperation("게시물 좋아요 API")
     @PostMapping("/{postId}/like")
-    public ApiResponse travelLike(@UserId Long userId, @PathVariable Long postId) {
-        travelService.travelLike(userId, postId);
-        return ApiResponse.success(SuccessCode.LIKE_TRAVEL_SUCCESS);
+    public ApiResponse<LikeCountResponseDto> travelLike(@UserId Long userId, @PathVariable Long postId) {
+        return ApiResponse.success(SuccessCode.LIKE_TRAVEL_SUCCESS, travelService.travelLike(userId, postId));
     }
 
     @Auth
     @ApiOperation("게시물 좋아요 취소 API")
     @DeleteMapping("{postId}/unlike")
-    public ApiResponse travelUnlike(@UserId Long userId, @PathVariable Long postId) {
-        travelService.travelUnlike(userId, postId);
-        return ApiResponse.success(SuccessCode.UNLIKE_TRAVEL_SUCCESS);
+    public ApiResponse<LikeCountResponseDto> travelUnlike(@UserId Long userId, @PathVariable Long postId) {
+        return ApiResponse.success(SuccessCode.UNLIKE_TRAVEL_SUCCESS, travelService.travelUnlike(userId, postId));
     }
 }

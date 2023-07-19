@@ -5,6 +5,7 @@ import com.deploy.Travalue.exception.model.NotFoundException;
 import com.deploy.Travalue.exception.model.UnauthorizedException;
 import com.deploy.Travalue.external.client.aws.S3Service;
 import com.deploy.Travalue.travel.controller.dto.request.TravellerRequestDto;
+import com.deploy.Travalue.travel.controller.dto.response.LikeCountResponseDto;
 import com.deploy.Travalue.travel.domain.*;
 import com.deploy.Travalue.travel.infrastructure.*;
 import com.deploy.Travalue.travel.service.dto.response.*;
@@ -337,7 +338,7 @@ public class TravelService {
     }
 
     @Transactional
-    public void travelLike(Long userId, Long postId) {
+    public LikeCountResponseDto travelLike(Long userId, Long postId) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
@@ -349,10 +350,13 @@ public class TravelService {
         }
 
         likeTravelRepository.save(LikeTravel.newInstance(user, travel));
+        Long likeCount = likeTravelRepository.countByTravelId(travel.getId());
+
+        return LikeCountResponseDto.of(likeCount);
     }
 
     @Transactional
-    public void travelUnlike(Long userId, Long postId) {
+    public LikeCountResponseDto travelUnlike(Long userId, Long postId) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
@@ -363,5 +367,8 @@ public class TravelService {
                 .orElseThrow(() -> new NotFoundException("좋아요를 누른 적이 없는 게시글입니다."));
 
         likeTravelRepository.deleteById(likeTravel.getId());
+        Long likeCount = likeTravelRepository.countByTravelId(travel.getId());
+
+        return LikeCountResponseDto.of(likeCount);
     }
 }
