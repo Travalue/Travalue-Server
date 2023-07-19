@@ -8,6 +8,7 @@ import com.deploy.Travalue.external.client.aws.S3Service;
 import com.deploy.Travalue.travel.controller.dto.request.CategoryRequestDto;
 import com.deploy.Travalue.travel.service.CategoryService;
 import com.deploy.Travalue.travel.service.dto.response.CategoryListResponseDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class CategoryController {
     @Auth
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @ApiOperation("카테고리 생성")
     public ApiResponse create(@UserId Long userId, @ModelAttribute @Valid final CategoryRequestDto request) {
         final String imagePath = s3Service.uploadImage(request.getThumbnail(), "category");
         categoryService.create(userId, imagePath, request);
@@ -37,6 +39,7 @@ public class CategoryController {
     @Auth
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "{categoryId}")
+    @ApiOperation("카테고리 수정")
     public ApiResponse update(@UserId Long userId, @PathVariable final Long categoryId, @ModelAttribute @Valid final CategoryRequestDto request) {
         final String imagePath = s3Service.uploadImage(request.getThumbnail(), "category");
         categoryService.update(userId, categoryId, imagePath, request);
@@ -46,6 +49,7 @@ public class CategoryController {
     @Auth
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "{categoryId}")
+    @ApiOperation("카테고리 삭제")
     public ApiResponse delete(@UserId Long userId, @PathVariable final Long categoryId) {
         categoryService.delete(userId, categoryId);
         return ApiResponse.success(SuccessCode.DELETE_CATEGORY_SUCCESS);
@@ -54,6 +58,7 @@ public class CategoryController {
     @Auth
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "")
+    @ApiOperation("카테고리 전체 조회")
     public ApiResponse<List<CategoryListResponseDto>> getList(@UserId Long userId) {
         return ApiResponse.success(SuccessCode.GET_CATEGORT_LIST_SUCCESS, categoryService.getList(userId));
     }
