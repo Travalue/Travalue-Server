@@ -7,6 +7,7 @@ import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.external.client.aws.S3Service;
 import com.deploy.Travalue.travel.controller.dto.request.CategoryRequestDto;
 import com.deploy.Travalue.travel.service.CategoryService;
+import com.deploy.Travalue.travel.service.dto.response.CategoryListResponseDto;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -49,4 +51,10 @@ public class CategoryController {
         return ApiResponse.success(SuccessCode.DELETE_CATEGORY_SUCCESS);
     }
 
+    @Auth
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "")
+    public ApiResponse<List<CategoryListResponseDto>> getList(@UserId Long userId) {
+        return ApiResponse.success(SuccessCode.GET_CATEGORT_LIST_SUCCESS, categoryService.getList(userId));
+    }
 }

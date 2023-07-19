@@ -21,4 +21,6 @@ public interface TravelRepository extends JpaRepository<Travel, Long>, TravelCus
     List<Travel> findTravelByIsPublicTrueAndIsDeletedFalseAndSectionAndTitleContainingOrSubTitleContaining(String section, String keyword1, String keyword2);
 
     List<Travel> findTop3ByIsPublicTrueAndIsDeletedFalseAndSectionOrderByCreatedAtDesc(String section);
+
+    Long countByCategoryId(Long categoryId);
 }
