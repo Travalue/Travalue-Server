@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MyTripRepository extends JpaRepository<MyTrip, Long> {
     List<MyTrip> findByUserId(Long userId);
+
+    void delete(MyTrip myTrip);
 }

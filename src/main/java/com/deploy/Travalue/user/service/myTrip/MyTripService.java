@@ -1,5 +1,6 @@
 package com.deploy.Travalue.user.service.myTrip;
 
+import com.deploy.Travalue.exception.model.ForbiddenException;
 import com.deploy.Travalue.exception.model.NotFoundException;
 import com.deploy.Travalue.user.controller.dto.myTrip.request.MyTripRequestDto;
 import com.deploy.Travalue.user.domain.User;
@@ -28,5 +29,19 @@ public class MyTripService {
                 request.getEmoji(),
                 request.getTravelTitle()
         ));
+    }
+
+    @Transactional
+    public void deleteMyTrip(final Long userId, final Long myTripId) {
+
+        final User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        final MyTrip myTrip = myTripRepository.findById(myTripId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 나의 여행지 입니다."));
+
+        if (!myTrip.getUser().equals(user)) {
+            throw new ForbiddenException("선택된 나의 여행지에 권한이 없습니다.");
+        }
+
+        myTripRepository.delete(myTrip);
     }
 }
