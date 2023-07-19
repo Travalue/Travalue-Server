@@ -7,6 +7,7 @@ import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.user.controller.dto.myTrip.request.MyTripRequestDto;
 import com.deploy.Travalue.user.service.myTrip.MyTripService;
 import com.deploy.Travalue.user.service.myTrip.dto.response.MyTripResponseDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class MyTripController {
 
     @Auth
     @PostMapping("")
+    @ApiOperation("여행지 리스트 추가")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse createMyTrip(@UserId Long userId, @RequestBody @Valid final MyTripRequestDto request) {
         myTripService.createMyTrip(userId, request);
