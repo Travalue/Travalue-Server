@@ -225,6 +225,8 @@ public class TravelService {
 
         String date = travel.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+        List<Travel> travelList = travelRepository.findTravelByUser(user);
+
         TravelWriterDto writer = TravelWriterDto.builder()
                 .userId(user.getId())
                 .nickname(user.getNickname())
@@ -233,9 +235,9 @@ public class TravelService {
                 .build();
 
         TravelStatisticsDto statistics = TravelStatisticsDto.builder()
-                .isLiked(likeTravelRepository.existsByTravelIdAndUserId(travelId, userId))
                 .likeCount(likeTravelRepository.countLikeTravelByTravelId(travelId))
                 .viewCount(travel.getViewCount())
+                .postCount(travelList.size())
                 .build();
 
         TravelResponseDto data = TravelResponseDto.builder()

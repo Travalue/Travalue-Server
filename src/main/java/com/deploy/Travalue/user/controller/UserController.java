@@ -60,14 +60,18 @@ public class UserController {
     }
 
     @Auth
-    @PostMapping("/block")
-    @ApiOperation("유저 차단 / 차단 해제")
-    public ApiResponse userBlock(@UserId Long userId,
-                                    @RequestBody UserBlockRequestDto userBlockRequestDto) {
-        log.info("유저 차단  userId : " + userId + " userBolckRequestDto : " + userBlockRequestDto.toString());
-
-        userService.blockUser(userId, userBlockRequestDto);
-
+    @PostMapping("/block/{userId}")
+    @ApiOperation("유저 차단")
+    public ApiResponse<?> blockUser(@UserId Long myId, @PathVariable Long userId) {
+        userService.blockUser(myId, userId);
         return ApiResponse.success(SuccessCode.USER_BLOCK_SUCCESS);
+    }
+
+    @Auth
+    @DeleteMapping("/unblock/{userId}")
+    @ApiOperation("유저 차단 해제")
+    public ApiResponse unblockUser(@UserId Long myId, @PathVariable Long userId) {
+        userService.unblockUser(myId, userId);
+        return ApiResponse.success(SuccessCode.USER_UNBLOCK_SUCCESS);
     }
 }
