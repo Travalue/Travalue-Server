@@ -27,4 +27,12 @@ public class MyTripController {
         myTripService.createMyTrip(userId, request);
         return ApiResponse.success(SuccessCode.CREATE_MY_TRIP_SUCCESS);
     }
+
+    @Auth
+    @DeleteMapping("/{myTripId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse deleteMyTrip(@UserId Long userId, @PathVariable Long myTripId) {
+        myTripService.deleteMyTrip(userId, myTripId);
+        return ApiResponse.success(SuccessCode.DELETE_MY_TRIP_SUCCESS);
+    }
 }
