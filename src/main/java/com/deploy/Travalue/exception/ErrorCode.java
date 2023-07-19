@@ -12,6 +12,7 @@ public enum ErrorCode {
     VALIDATION_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     NOT_FOUND_EXCEPTION(HttpStatus.BAD_REQUEST, "존재하지 않는 자원입니다."),
     NO_ANNOTATION_EXCEPTION(HttpStatus.BAD_REQUEST, "필요한 어노테이션이 존재하지 않습니다."),
+    CONFLICT_EXCEPTION(HttpStatus.CONFLICT, "중복된 요청입니다."),
     FILE_LIMIT_OVER_EXCEPTION(HttpStatus.BAD_REQUEST, "파일의 용량이 제한을 넘었습니다 (50MB)"),
 
     // 401 Unauthorized
