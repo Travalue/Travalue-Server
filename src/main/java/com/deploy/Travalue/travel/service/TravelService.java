@@ -1,5 +1,6 @@
 package com.deploy.Travalue.travel.service;
 
+import com.deploy.Travalue.exception.model.ConflictException;
 import com.deploy.Travalue.exception.model.NotFoundException;
 import com.deploy.Travalue.exception.model.UnauthorizedException;
 import com.deploy.Travalue.external.client.aws.S3Service;
@@ -149,7 +150,7 @@ public class TravelService {
 
         s3Service.deleteFile(traveller.getThumbnail());
         List<TravelContent> travelContentList = travelContentRepository.findTravelContentByTravelId(travellerId);
-        for(TravelContent travelContent: travelContentList) {
+        for (TravelContent travelContent : travelContentList) {
             s3Service.deleteFile(travelContent.getImageUrl());
         }
 
@@ -262,11 +263,19 @@ public class TravelService {
         travelRepository.save(travel);
     }
 
-    public List<SharedTravelDetailDto> getTravellersByProfileOwnerId(Long userId) {
+    public List<SharedTravelDetailDto> getTravellersByProfileOwnerId(Long userId, Long pageOwnerUserId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        User pageOwner = userRepository.findById(pageOwnerUserId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        List<Travel> travelList = travelRepository.findTravelByUser(user);
+        List<Travel> travelList;
+        if (user == pageOwner) {
+            // 본인인 경우 비공개 게시물도 보여줌
+            travelList = travelRepository.findTravelByUserAndIsDeletedFalse(pageOwner);
+        } else {
+            travelList = travelRepository.findTravelByUserAndIsDeletedFalseAndIsPublicTrue(pageOwner);
+        }
 
         // List<Travel> -> List<SharedTravelDetailDto>
         List<SharedTravelDetailDto> sharedTravelDetailDtoList = travelList.stream()
@@ -276,14 +285,22 @@ public class TravelService {
         return sharedTravelDetailDtoList;
     }
 
-    public List<SharedTravelDetailDto> getTravellersByCategory(Long userId, Long categoryId) {
+    public List<SharedTravelDetailDto> getTravellersByCategory(Long userId, Long pageOwnerUserId, Long categoryId) {
         User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        User pageOwner = userRepository.findById(pageOwnerUserId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("존재하지 카테고리 id 입니다."));
 
-        List<Travel> travelList = travelRepository.findTravelByUserAndCategory(user, category);
+        List<Travel> travelList;
+        if (user == pageOwner) {
+            // 본인인 경우 비공개 게시물도 보여줌
+            travelList = travelRepository.findTravelByUserAndCategoryAndIsDeletedFalse(pageOwner, category);
+        } else {
+            travelList = travelRepository.findTravelByUserAndCategoryAndIsDeletedFalseAndIsPublicTrue(pageOwner, category);
+        }
 
         // List<Travel> -> List<SharedTravelDetailDto>
         List<SharedTravelDetailDto> sharedTravelDetailDtoList = travelList.stream()
@@ -327,13 +344,17 @@ public class TravelService {
         final Travel travel = travelRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
 
+        if (likeTravelRepository.existsByTravelIdAndUserId(user.getId(), travel.getId())) {
+            throw new ConflictException("이미 좋아요를 누른 게시물입니다.");
+        }
+
         likeTravelRepository.save(LikeTravel.newInstance(user, travel));
     }
 
     @Transactional
     public void travelUnlike(Long userId, Long postId) {
-       final User user = userRepository.findById(userId)
-               .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
         final Travel travel = travelRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));

@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface LikeTravelRepository extends JpaRepository<LikeTravel, Long> {
+public interface LikeTravelRepository extends JpaRepository<LikeTravel, Long>, LikeTravelCustomRepository {
 
     Optional<LikeTravel> findByUserIdAndTravelId(Long userId, Long travelId);
-    int countLikeTravelByUser(User user);
+    boolean existsByUserIdAndTravelId(Long userId, Long travelId);
 
     int countLikeTravelByTravelId(Long travelId);
 

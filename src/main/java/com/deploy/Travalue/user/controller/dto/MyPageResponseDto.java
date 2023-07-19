@@ -18,7 +18,6 @@ public class MyPageResponseDto {
     String nickname;
     String profileImage;
     String description;
-    int travelCount;
     List<MyTripResponseDto> travelList;
     int sharedTravelCount;
     List<SharedTravelDto> sharedTravel;
@@ -30,7 +29,6 @@ public class MyPageResponseDto {
         this.nickname = user.getNickname();
         this.profileImage = user.getProfileImage();
         this.description = user.getDescription();
-        this.travelCount = user.getTravelCount();
         this.travelList = travelList;
         this.sharedTravelCount = sharedTravelCount;
         this.sharedTravel = sharedTravel;

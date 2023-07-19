@@ -26,7 +26,7 @@ public class UserController {
     @Auth
     @ApiOperation("마이페이지 조회")
     @GetMapping("/{pageOwnerUserId}")
-    public ApiResponse<?> getMyPage(@UserId Long userId, Long pageOwnerUserId) {
+    public ApiResponse<MyPageResponseDto> getMyPage(@UserId Long userId, Long pageOwnerUserId) {
         log.info("userId :" + userId + " pageOwnerUserId : " + pageOwnerUserId);
         MyPageResponseDto myPageResponseDto = userService.getMyPage(userId, pageOwnerUserId);
         return ApiResponse.success(SuccessCode.GET_MY_PAGE_SUCCESS, myPageResponseDto);
@@ -44,7 +44,7 @@ public class UserController {
     @Transactional
     @PutMapping("/nickname")
     @ApiOperation("닉네임 등록 / 수정")
-    public ApiResponse<?> updateNickname(
+    public ApiResponse updateNickname(
             @Valid @RequestBody final NicknameRequestDto nicknameRequestDto, @UserId Long userId) {
         log.info("userId :" + userId);
         String nickname = nicknameRequestDto.getNickname();

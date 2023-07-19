@@ -10,11 +10,17 @@ import java.util.List;
 public interface TravelRepository extends JpaRepository<Travel, Long>, TravelCustomRepository {
     List<Travel> findTravelByIsPublicTrueAndIsDeletedFalseAndSection(String section);
 
-    List<Travel> findTravelByUser(User user);
+    List<Travel> findTravelByUserAndIsDeletedFalse(User user);
 
-    List<Travel> findTravelByUserAndCategory(User user, Category category);
+    List<Travel> findTravelByUserAndIsDeletedFalseAndIsPublicTrue(User user);
+
+    List<Travel> findTravelByUserAndCategoryAndIsDeletedFalse(User user, Category category);
+
+    List<Travel> findTravelByUserAndCategoryAndIsDeletedFalseAndIsPublicTrue(User user, Category category);
 
     List<Travel> findTravelByIsPublicTrueAndIsDeletedFalseAndSectionAndTitleContainingOrSubTitleContaining(String section, String keyword1, String keyword2);
 
     List<Travel> findTop3ByIsPublicTrueAndIsDeletedFalseAndSectionOrderByCreatedAtDesc(String section);
+
+    Long countByCategoryId(Long categoryId);
 }
