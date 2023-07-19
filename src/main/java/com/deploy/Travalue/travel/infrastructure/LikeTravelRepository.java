@@ -14,4 +14,6 @@ public interface LikeTravelRepository extends JpaRepository<LikeTravel, Long>, L
     int countLikeTravelByTravelId(Long travelId);
 
     boolean existsByTravelIdAndUserId(Long travelId, Long userId);
+
+    Long countByTravelId(Long travelId);
 }
