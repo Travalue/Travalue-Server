@@ -110,34 +110,35 @@ public class UserService {
     }
 
     @Transactional
-    public void blockUser(Long userId, UserBlockRequestDto userBlockRequestDto) {
-        // TODO: isBlocked 변수 없이 DB에서 검색해서 차단했는지 검색해서 알맞게 차단 / 해제 해주는 것도 괜찮을 듯
-        Long blockUserId = userBlockRequestDto.getBlockUserUid();
-        boolean isBlocked = userBlockRequestDto.isBlocked();
-
-        User user = userRepository.findById(userId)
+    public void blockUser(Long myId, Long userId) {
+        User user = userRepository.findById(myId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-        User blockedUser = userRepository.findById(blockUserId)
+        User blockedUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("차단 할 유저가 존재 하지않습니다."));
 
-        if (isBlocked) {
-            // 차단 하는 경우
-            Optional<BlockUser> alreadyBlockedUser = blockUserRepository.findBlockUsersByBlockUserAndBlockedUser(user, blockedUser);
-            if (alreadyBlockedUser.isPresent()) {
-                throw new IllegalArgumentException("이미 차단한 유저입니다.");
-            }
+        Optional<BlockUser> alreadyBlockedUser = blockUserRepository.findBlockUsersByBlockUserAndBlockedUser(user, blockedUser);
 
-            BlockUser blockUser = BlockUser.builder()
-                    .blockUser(user)
-                    .blockedUser(blockedUser)
-                    .build();
-            blockUserRepository.save(blockUser);
-        } else {
-            // 차단 해제 하는 경우
-            BlockUser blockUser = blockUserRepository.findBlockUsersByBlockUserAndBlockedUser(user, blockedUser)
-                    .orElseThrow(() -> new IllegalArgumentException("차단한 이력이 없는 유저입니다."));
-            blockUserRepository.delete(blockUser);
+        if (alreadyBlockedUser.isPresent()) {
+            throw new IllegalArgumentException("이미 차단한 유저입니다.");
         }
+
+        BlockUser blockUser = BlockUser.builder()
+                .blockUser(user)
+                .blockedUser(blockedUser)
+                .build();
+
+        blockUserRepository.save(blockUser);
+    }
+
+    @Transactional
+    public void unblockUser(Long myId, Long userId) {
+        User user = userRepository.findById(myId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        User blockedUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("차단 해제할 유저가 존재 하지않습니다."));
+        BlockUser blockUser = blockUserRepository.findBlockUsersByBlockUserAndBlockedUser(user, blockedUser)
+                .orElseThrow(() -> new IllegalArgumentException("차단되지 않은 유저입니다."));
+        blockUserRepository.delete(blockUser);
     }
 
     @Transactional

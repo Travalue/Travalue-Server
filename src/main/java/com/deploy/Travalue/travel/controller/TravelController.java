@@ -117,6 +117,7 @@ public class TravelController {
         return ApiResponse.success(SuccessCode.READ_SHARED_TRAVELLERS_BY_CATEGORY_SUCCESS, travellers);
     }
 
+    @Auth
     @ApiOperation("Traveller 검색 API")
     @GetMapping("traveller/search")
     public ApiResponse<List<TravellersResponseDto>> getSearchedTravellers(@RequestParam String keyword) {
