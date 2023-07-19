@@ -53,7 +53,7 @@ public class TravelController {
     }
 
     @Auth
-    @ApiOperation("Travveller 수정 API")
+    @ApiOperation("Traveller 수정 API")
     @PutMapping("traveller/{travellerId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse update(@UserId Long userId, @PathVariable Long travellerId, @ModelAttribute @Valid final TravellerRequestDto request) {
@@ -83,7 +83,7 @@ public class TravelController {
     }
 
     @Auth
-    @ApiOperation("Travel 상세 조회 API")
+    @ApiOperation("게시물 상세 조회 API")
     @GetMapping("{id}")
     public ApiResponse<TravelResponseDto> getTravelById(@PathVariable("id") Long travelId, @UserId Long userId) {
         final TravelResponseDto data = travelService.getTravelById(travelId, userId);
@@ -100,7 +100,7 @@ public class TravelController {
     @Auth
     @ApiOperation("공유 중인 Traveller 전체 조회 API")
     @GetMapping("traveller/share/{pageOwnerUserId}")
-    public ApiResponse<?> getTravellers(@PathVariable Long pageOwnerUserId, @UserId Long userId) {
+    public ApiResponse<List<SharedTravelDetailDto>> getTravellers(@PathVariable Long pageOwnerUserId, @UserId Long userId) {
         log.info("공유 중인 Travellser 전체 조회 API - pageOwnerUserId : " + pageOwnerUserId);
         final List<SharedTravelDetailDto> travellers = travelService.getTravellersByProfileOwnerId(userId, pageOwnerUserId);
         return ApiResponse.success(SuccessCode.READ_SHARED_TRAVELLERS_SUCCESS, travellers);
@@ -109,7 +109,7 @@ public class TravelController {
     @Auth
     @ApiOperation("공유 중인 Traveller 카테고리별 조회 API")
     @GetMapping("traveller/share/{pageOwnerUserId}/{categoryId}")
-    public ApiResponse<?> getTravellers(@PathVariable Long pageOwnerUserId, @PathVariable Long categoryId, @UserId Long userId) {
+    public ApiResponse<List<SharedTravelDetailDto>> getTravellers(@PathVariable Long pageOwnerUserId, @PathVariable Long categoryId, @UserId Long userId) {
         // TODO: 이거 getRravellers 함수명 3곳에서 공유했는데 변경해주는게 좋겠지? 오버로딩으로 되길래 사용했는데...
         log.info("공유 중인 Travellser 카테고리별 조회 API - pageOwnerUserId : " + pageOwnerUserId + " categoryId : " + categoryId + " userId : " + userId);
 

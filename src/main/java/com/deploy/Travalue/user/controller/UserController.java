@@ -62,7 +62,7 @@ public class UserController {
     @Auth
     @PostMapping("/block/{userId}")
     @ApiOperation("유저 차단")
-    public ApiResponse<?> blockUser(@UserId Long myId, @PathVariable Long userId) {
+    public ApiResponse blockUser(@UserId Long myId, @PathVariable Long userId) {
         userService.blockUser(myId, userId);
         return ApiResponse.success(SuccessCode.USER_BLOCK_SUCCESS);
     }
