@@ -15,11 +15,14 @@ public class TravelWriterDto {
 
     private String profileImageURL;
 
+    private int postCount;
+
     @Builder
-    public TravelWriterDto(Long userId, String nickname, String description, String profileImageURL) {
+    public TravelWriterDto(Long userId, String nickname, String description, String profileImageURL, int postCount) {
         this.userId = userId;
         this.nickname = nickname;
         this.description = description;
         this.profileImageURL = profileImageURL;
+        this.postCount = postCount;
     }
 }
