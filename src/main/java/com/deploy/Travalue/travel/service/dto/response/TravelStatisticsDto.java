@@ -11,13 +11,10 @@ public class TravelStatisticsDto {
     int likeCount;
     int viewCount;
 
-    int postCount;
-
     @Builder
-    public TravelStatisticsDto(boolean isLiked, int likeCount, int viewCount, int postCount) {
+    public TravelStatisticsDto(boolean isLiked, int likeCount, int viewCount) {
         this.isLiked = isLiked;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
-        this.postCount = postCount;
     }
 }
