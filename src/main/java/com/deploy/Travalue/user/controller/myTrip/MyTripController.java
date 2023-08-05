@@ -5,8 +5,8 @@ import com.deploy.Travalue.config.interceptor.Auth;
 import com.deploy.Travalue.config.resolver.UserId;
 import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.user.controller.dto.myTrip.request.MyTripRequestDto;
+import com.deploy.Travalue.user.controller.dto.myTrip.response.MyTripResponseDto;
 import com.deploy.Travalue.user.service.myTrip.MyTripService;
-import com.deploy.Travalue.user.service.myTrip.dto.response.MyTripResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +20,14 @@ import java.util.List;
 @RequestMapping("/mytrip")
 public class MyTripController {
     private final MyTripService myTripService;
+
+    @Auth
+    @GetMapping("")
+    @ApiOperation("여행지 리스트 조회")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<MyTripResponseDto>> getMyTripList(@UserId Long userId) {
+        return ApiResponse.success(SuccessCode.GET_MY_TRIP_LIST_SUCCESS, myTripService.getMyTripList(userId));
+    }
 
     @Auth
     @PostMapping("")
