@@ -85,7 +85,7 @@ public class CategoryService {
         List<CategoryListResponseDto> response = new ArrayList<>();
         for (Category category : categories) {
             Long count = travelRepository.countByCategoryId(category.getId());
-            response.add(CategoryListResponseDto.of(category.getTitle(), count));
+            response.add(CategoryListResponseDto.of(category.getId(), category.getTitle(), count));
         }
 
         return response;
