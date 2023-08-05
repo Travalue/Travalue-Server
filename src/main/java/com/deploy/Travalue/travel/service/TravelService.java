@@ -232,12 +232,13 @@ public class TravelService {
                 .nickname(user.getNickname())
                 .description(user.getDescription())
                 .profileImageURL(user.getProfileImage())
+                .postCount(travelList.size())
                 .build();
 
         TravelStatisticsDto statistics = TravelStatisticsDto.builder()
+                .isLiked(likeTravelRepository.existsByTravelIdAndUserId(travelId, userId))
                 .likeCount(likeTravelRepository.countLikeTravelByTravelId(travelId))
                 .viewCount(travel.getViewCount())
-                .postCount(travelList.size())
                 .build();
 
         TravelResponseDto data = TravelResponseDto.builder()
