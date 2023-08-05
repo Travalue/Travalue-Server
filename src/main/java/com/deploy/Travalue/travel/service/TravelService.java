@@ -346,7 +346,7 @@ public class TravelService {
         final Travel travel = travelRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
 
-        if (likeTravelRepository.existsByTravelIdAndUserId(user.getId(), travel.getId())) {
+        if (likeTravelRepository.existsByTravelIdAndUserId(travel.getId(), user.getId())) {
             throw new ConflictException("이미 좋아요를 누른 게시물입니다.");
         }
 
