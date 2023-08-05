@@ -312,6 +312,28 @@ public class TravelService {
         return sharedTravelDetailDtoList;
     }
 
+    @Transactional
+    public List<TrailersResponseDto> getLikedPosts(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+
+        List<LikeTravel> likedTravelIdList = likeTravelRepository.findByUserId(userId);
+
+        System.out.println(likedTravelIdList.get(0).getTravel());
+
+        return likedTravelIdList.stream()
+                .map(travelLike -> {
+                    Travel findTravel = travelRepository.findById(travelLike.getTravel().getId()).orElseThrow(() ->new NotFoundException("존재하지 않는 게시물입니다."));
+                    return TrailersResponseDto.of(
+                            findTravel.getId(),
+                            findTravel.getSubject(),
+                            findTravel.getTitle(),
+                            findTravel.getSubTitle(),
+                            findTravel.getThumbnail()
+                    );
+                }).collect(Collectors.toList());
+    }
+
     public List<TravellersResponseDto> getSearchedTravellers(String keyword) {
         List<Travel> travelList = travelRepository.findTravelByIsPublicTrueAndIsDeletedFalseAndSectionAndTitleContainingOrSubTitleContaining("traveller", keyword, keyword);
         List<TravellersResponseDto> searchedTravellerList = travelList.stream().map(travel -> TravellersResponseDto.of(
@@ -346,7 +368,7 @@ public class TravelService {
         final Travel travel = travelRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
 
-        if (likeTravelRepository.existsByTravelIdAndUserId(user.getId(), travel.getId())) {
+        if (likeTravelRepository.existsByTravelIdAndUserId(travel.getId(), user.getId())) {
             throw new ConflictException("이미 좋아요를 누른 게시물입니다.");
         }
 

@@ -41,7 +41,7 @@ public class CategoryController {
     @PutMapping(value = "{categoryId}")
     @ApiOperation("카테고리 수정")
     public ApiResponse update(@UserId Long userId, @PathVariable final Long categoryId, @ModelAttribute @Valid final CategoryRequestDto request) {
-        final String imagePath = s3Service.uploadImage(request.getThumbnail(), "category");
+        final String imagePath = !(request.getThumbnail() == null) && !(request.getThumbnail().isEmpty()) ? s3Service.uploadImage(request.getThumbnail(), "category") : "";
         categoryService.update(userId, categoryId, imagePath, request);
         return ApiResponse.success(SuccessCode.UPDATE_CATEGORY_SUCCESS);
     }
