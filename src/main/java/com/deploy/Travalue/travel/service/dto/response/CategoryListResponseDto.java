@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryListResponseDto {
 
+    private Long id;
     private String title;
     private Long travellerCount;
 
-    public static CategoryListResponseDto of(String title, Long travellerCount) {
-        return new CategoryListResponseDto(title, travellerCount);
+    public static CategoryListResponseDto of(Long id, String title, Long travellerCount) {
+        return new CategoryListResponseDto(id, title, travellerCount);
     }
 }
