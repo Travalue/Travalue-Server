@@ -119,6 +119,14 @@ public class TravelController {
     }
 
     @Auth
+    @ApiOperation("좋아요한 게시물 전체 조회 API")
+    @GetMapping("liked")
+    public ApiResponse<List<TrailersResponseDto>> getLikedPosts(@UserId Long userId) {
+        final List<TrailersResponseDto> likedPosts = travelService.getLikedPosts(userId);
+        return ApiResponse.success(SuccessCode.READ_LIKED_TRAVEL_SUCCESS, likedPosts);
+    }
+
+    @Auth
     @ApiOperation("Traveller 검색 API")
     @GetMapping("traveller/search")
     public ApiResponse<List<TravellersResponseDto>> getSearchedTravellers(@RequestParam String keyword) {

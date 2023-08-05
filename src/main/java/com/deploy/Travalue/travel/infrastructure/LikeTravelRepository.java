@@ -4,6 +4,7 @@ import com.deploy.Travalue.travel.domain.LikeTravel;
 import com.deploy.Travalue.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LikeTravelRepository extends JpaRepository<LikeTravel, Long>, LikeTravelCustomRepository {
@@ -16,4 +17,6 @@ public interface LikeTravelRepository extends JpaRepository<LikeTravel, Long>, L
     boolean existsByTravelIdAndUserId(Long travelId, Long userId);
 
     Long countByTravelId(Long travelId);
+
+    List<LikeTravel> findByUserId(Long userId);
 }

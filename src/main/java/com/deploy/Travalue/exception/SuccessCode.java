@@ -22,6 +22,7 @@ public enum SuccessCode {
     GET_MY_PAGE_SUCCESS(HttpStatus.OK, "마이 페이지 조회성공"),
     USER_BLOCK_SUCCESS(HttpStatus.OK, "유저 차단 성공"),
     USER_UNBLOCK_SUCCESS(HttpStatus.OK, "유저 차단 해제 성공"),
+    READ_LIKED_TRAVEL_SUCCESS(HttpStatus.OK, "좋아요한 게시물 전체 조회 성공"),
 
     // travel
     CREATE_CATEGORY_SUCCESS(HttpStatus.CREATED, "카테고리가 생성됐습니다."),
