@@ -1,6 +1,10 @@
 package com.deploy.Travalue.user.service;
 
+import com.deploy.Travalue.common.dto.ApiResponse;
+import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.exception.model.NotFoundException;
+import com.deploy.Travalue.external.client.aws.S3Service;
+import com.deploy.Travalue.travel.domain.TravelContentInfoVO;
 import com.deploy.Travalue.travel.infrastructure.LikeTravelRepository;
 import com.deploy.Travalue.travel.infrastructure.TravelRepository;
 import com.deploy.Travalue.user.controller.dto.*;
@@ -13,6 +17,7 @@ import com.deploy.Travalue.user.infrastructure.UserRepository;
 import com.deploy.Travalue.user.infrastructure.myTrip.MyTripRepository;
 import com.deploy.Travalue.user.service.myTrip.dto.response.MyTripResponseDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -29,6 +35,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private final S3Service s3Service;
     private final UserRepository userRepository;
     private final MyTripRepository myTripRepository;
     private final TravelRepository travelRepository;
@@ -146,6 +153,11 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        user.updateProfile(updateProfileRequestDto);
+        if(updateProfileRequestDto.getProfileImage() != null){
+            String profileImagePath = s3Service.uploadImage(updateProfileRequestDto.getProfileImage(), "profileImage");
+            user.updateAllProfile(updateProfileRequestDto, profileImagePath);
+        }else{
+            user.updateProfile(updateProfileRequestDto);
+        }
     }
 }
