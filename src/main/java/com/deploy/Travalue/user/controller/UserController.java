@@ -9,11 +9,13 @@ import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.deploy.Travalue.config.interceptor.Auth;
 import com.deploy.Travalue.config.resolver.UserId;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -33,9 +35,9 @@ public class UserController {
     }
 
     @Auth
-    @PatchMapping()
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation("마이페이지 수정")
-    public ApiResponse<NicknameResponseDto> updateProfile(@Valid @RequestBody final UpdateProfileRequestDto updateProfileRequestDto, @UserId Long userId) {
+    public ApiResponse<NicknameResponseDto> updateProfile(UpdateProfileRequestDto updateProfileRequestDto, @UserId Long userId) {
         userService.updateProfile(updateProfileRequestDto, userId);
         return ApiResponse.success(SuccessCode.UPDATE_PROFILE_SUCCESS);
     }
