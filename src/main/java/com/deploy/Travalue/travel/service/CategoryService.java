@@ -51,10 +51,13 @@ public class CategoryService {
             throw new UnauthorizedException("해당 카테고리에 권한이 없습니다.");
         }
 
-        s3Service.deleteFile(category.getThumbnail());
+        if (imagePath.equals("")) {
+            category.update(user, request.getTitle(), category.getThumbnail(), request.getSubject(), request.getRegion());
+        } else {
+            s3Service.deleteFile(category.getThumbnail());
 
-        category.update(user, request.getTitle(), imagePath, request.getSubject(), request.getRegion());
-
+            category.update(user, request.getTitle(), imagePath, request.getSubject(), request.getRegion());
+        }
     }
 
     @Transactional

@@ -20,6 +20,5 @@ public class CategoryRequestDto {
 
     private String region;
 
-    @NotNull
     private MultipartFile thumbnail;
 }

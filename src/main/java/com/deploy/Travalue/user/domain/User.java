@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.ColumnDefault;
 import lombok.Builder;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Getter
@@ -71,9 +72,17 @@ public class User extends AuditingTimeEntity {
         this.nickname = nickname;
         this.isSignupCompleted = true;
     }
-
     public void updateProfile(UpdateProfileRequestDto updateProfileRequestDto) {
-        this.nickname = updateProfileRequestDto.getNickname();
-        this.description = updateProfileRequestDto.getDescription();
+        if(updateProfileRequestDto.getNickname() != null)
+            this.nickname = updateProfileRequestDto.getNickname();
+        if(updateProfileRequestDto.getDescription() != null)
+            this.description = updateProfileRequestDto.getDescription();
+    }
+    public void updateAllProfile(UpdateProfileRequestDto updateProfileRequestDto, String profileImage) {
+        if(updateProfileRequestDto.getNickname() != null)
+            this.nickname = updateProfileRequestDto.getNickname();
+        if(updateProfileRequestDto.getDescription() != null)
+            this.description = updateProfileRequestDto.getDescription();
+        this.profileImage = profileImage;
     }
 }
