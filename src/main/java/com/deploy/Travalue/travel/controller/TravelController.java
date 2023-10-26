@@ -17,6 +17,7 @@ import com.deploy.Travalue.user.controller.dto.SharedTravelDetailDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +39,7 @@ public class TravelController {
 
     @Auth
     @ApiOperation("Traveller 생성 API")
-    @PostMapping("traveller")
+    @PostMapping(value = "traveller", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse create(@UserId Long userId, @ModelAttribute @Valid final TravellerRequestDto request) {
         final String thumbnailImagePath = s3Service.uploadImage(request.getThumbnail(), "traveller");
