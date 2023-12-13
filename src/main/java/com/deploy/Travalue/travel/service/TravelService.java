@@ -34,6 +34,7 @@ public class TravelService {
     private final TravelContentRepository travelContentRepository;
     private final TravelInformationRepository travelInformationRepository;
     private final LikeTravelRepository likeTravelRepository;
+    private final ReportTravelRepository reportTravelRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -393,5 +394,20 @@ public class TravelService {
         Long likeCount = likeTravelRepository.countByTravelId(travel.getId());
 
         return LikeCountResponseDto.of(likeCount);
+    }
+
+    @Transactional
+    public void reportTravel(Long userId, Long postId, String reason) {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        final Travel travel = travelRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 게시물입니다."));
+
+        if (reportTravelRepository.existsByReportedTravelIdAndUserId(travel.getId(), user.getId())) {
+            throw new ConflictException("이미 신고한 게시물입니다.");
+        }
+
+        reportTravelRepository.save(ReportTravel.newInstance(user, travel, reason));
     }
 }
