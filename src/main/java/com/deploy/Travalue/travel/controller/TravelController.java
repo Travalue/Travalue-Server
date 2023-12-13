@@ -5,6 +5,7 @@ import com.deploy.Travalue.config.interceptor.Auth;
 import com.deploy.Travalue.config.resolver.UserId;
 import com.deploy.Travalue.exception.SuccessCode;
 import com.deploy.Travalue.external.client.aws.S3Service;
+import com.deploy.Travalue.travel.controller.dto.request.ReportTravelRequestDto;
 import com.deploy.Travalue.travel.controller.dto.request.TravellerRequestDto;
 import com.deploy.Travalue.travel.controller.dto.response.LikeCountResponseDto;
 import com.deploy.Travalue.travel.domain.TravelContentInfoVO;
@@ -154,5 +155,14 @@ public class TravelController {
     @DeleteMapping("{postId}/unlike")
     public ApiResponse<LikeCountResponseDto> travelUnlike(@UserId Long userId, @PathVariable Long postId) {
         return ApiResponse.success(SuccessCode.UNLIKE_TRAVEL_SUCCESS, travelService.travelUnlike(userId, postId));
+    }
+
+    @Auth
+    @ApiOperation("게시물 신고 API")
+    @PostMapping("/{postId}/report")
+    public ApiResponse reportTravel(@UserId Long userId, @PathVariable Long postId, @RequestBody ReportTravelRequestDto reportTravelRequestDto) {
+        String reason = reportTravelRequestDto.getReason();
+        travelService.reportTravel(userId, postId, reason);
+        return ApiResponse.success(SuccessCode.REPORT_TRAVEL_SUCCESS);
     }
 }
